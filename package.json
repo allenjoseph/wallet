@@ -1,0 +1,33 @@
+{
+  "name": "wallet",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
+    "fb": "firebase",
+    "fb:deploy": "firebase deploy --only hosting"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@tailwindcss/forms": "^0.5.9",
+    "@tsconfig/svelte": "^5.0.4",
+    "autoprefixer": "^10.4.20",
+    "cssnano": "^7.0.6",
+    "firebase-tools": "^13.29.1",
+    "postcss": "^8.4.49",
+    "svelte": "^5.15.0",
+    "svelte-check": "^4.1.1",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~5.6.2",
+    "vite": "^6.0.5"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.13",
+    "firebase": "^11.1.0",
+    "lucide-svelte": "^0.469.0"
+  }
+}
