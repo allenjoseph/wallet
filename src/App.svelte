@@ -1,6 +1,6 @@
 <script lang="ts">
   import "./app.css";
-  import SideMenu from "./components/SideMenu.svelte";
+  import TopMenu from "./components/TopMenu.svelte";
   import Expenses from "./views/Expenses.svelte";
   import AddExpense from "./views/AddExpense.svelte";
   import AddCategory from "./views/AddCategory.svelte";
@@ -12,7 +12,7 @@
 
 <main class="flex">
   {#if wallet.user !== null}
-    <SideMenu />
+    <TopMenu />
     {#if wallet.menuSeleted === "expense"}
       <AddExpense />
     {:else if wallet.menuSeleted === "category"}
