@@ -47,7 +47,7 @@
       <SourceCard
         {...source}
         onedit={() => onEdit(source)}
-        ondelete={() => onDelete(source.id!)}
+        ondelete={loaderDecorator(() => onDelete(source.id!))}
       />
     {/each}
   {/await}

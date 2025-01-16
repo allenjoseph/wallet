@@ -1,6 +1,6 @@
 <script lang="ts">
   import dayjs from "dayjs";
-  import AmountKeypad from "../components/AmountKeypad.svelte";
+  import ExpenseAmount from "../components/ExpenseAmount.svelte";
   import BadgeDropdown from "../components/BadgeDropdown.svelte";
   import { saveExpense, getCategories, getSources } from "../lib/backend";
   import Button from "../components/Button.svelte";
@@ -37,6 +37,7 @@
 
 <View>
   <h1 class="text-2xl font-medium">Expense</h1>
+  <ExpenseAmount bind:amount={expense.amount} />
   <Input name="expenseDate" bind:value={expenseDate} type="datetime-local" />
   <Input name="name" bind:value={expense.name} />
   <div class="flex items-start gap-2 flex-wrap">
@@ -53,6 +54,5 @@
       placeholder="Source"
     />
   </div>
-  <AmountKeypad bind:amount={expense.amount} />
   <Button onClick={loaderDecorator(onSave)}>Save</Button>
 </View>

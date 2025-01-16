@@ -47,7 +47,7 @@
       <CategoryCard
         {...category}
         onedit={() => onEdit(category)}
-        ondelete={() => onDelete(category.id!)}
+        ondelete={loaderDecorator(() => onDelete(category.id!))}
       />
     {/each}
   {/await}
