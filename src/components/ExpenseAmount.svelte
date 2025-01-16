@@ -36,7 +36,7 @@
   </button>
   <input
     type="number"
-    inputmode="numeric"
+    inputmode="decimal"
     class="p-0 opacity-0 w-0 h-0 overflow-hidden"
     bind:value={amount}
     bind:this={amount$}
