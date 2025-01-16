@@ -19,7 +19,9 @@
   }
 </script>
 
-<div class="flex h-screen w-16 flex-col justify-between border-e bg-white">
+<div
+  class="fixed flex h-screen w-16 flex-col justify-between border-e bg-white z-10"
+>
   <div>
     <div class="inline-flex size-16 items-center justify-center">
       {#if hasImage}
