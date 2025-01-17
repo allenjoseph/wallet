@@ -8,7 +8,9 @@
   }
 </script>
 
-<div class="fixed bottom-0 flex w-screen h-14 border-t bg-white z-20">
+<div
+  class="fixed bottom-0 flex w-screen h-[calc(env(safe-area-inset-bottom)+56px)] border-t bg-white z-20"
+>
   <ul class="flex-1 flex justify-center gap-1">
     {#each Object.values(menu) as item}
       <li class="p-2 size-14 flex items-center justify-center">
