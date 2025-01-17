@@ -9,7 +9,7 @@
 </script>
 
 <div
-  class="fixed bottom-0 flex w-screen h-[calc(env(safe-area-inset-bottom)+56px)] border-t bg-white z-20"
+  class="fixed bottom-0 flex w-screen h-[calc(env(safe-area-inset-bottom))+3.5rem] pb-[env(safe-area-inset-bottom)] border-t bg-white z-20"
 >
   <ul class="flex-1 flex justify-center gap-1">
     {#each Object.values(menu) as item}
