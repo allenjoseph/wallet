@@ -6,10 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "deploy": "firebase deploy --only hosting",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
-    "fb": "firebase",
-    "fb:deploy": "firebase deploy --only hosting"
+    "fb": "firebase"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
