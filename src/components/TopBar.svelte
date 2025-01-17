@@ -32,7 +32,7 @@
   </div>
 
   <div class="flex-1 flex items-center pl-2">
-    <h1 class="text-2xl font-medium">{menu[wallet.menuSeleted].title}</h1>
+    <h1 class="text-2xl">{menu[wallet.menuSeleted].title}</h1>
   </div>
 
   <div class="sticky inset-x-0 self-end bg-white p-2">
