@@ -28,8 +28,7 @@
 </script>
 
 <View>
-  <h1 class="text-2xl font-medium">Source</h1>
-
+  <Divider>Add / Edit</Divider>
   <div class="flex flex-col gap-4">
     <Input name="name" bind:value={source.name} />
     <Input name="description" bind:value={source.description} />

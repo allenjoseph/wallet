@@ -1,6 +1,7 @@
 <script lang="ts">
   import "./app.css";
-  import TopMenu from "./components/TopMenu.svelte";
+  import TopBar from "./components/TopBar.svelte";
+  import BottomBar from "./components/BottomBar.svelte";
   import Expenses from "./views/Expenses.svelte";
   import AddExpense from "./views/AddExpense.svelte";
   import AddCategory from "./views/AddCategory.svelte";
@@ -12,7 +13,7 @@
 
 <main class="flex">
   {#if wallet.user !== null}
-    <TopMenu />
+    <TopBar />
     {#if wallet.menuSeleted === "expense"}
       <AddExpense />
     {:else if wallet.menuSeleted === "category"}
@@ -22,15 +23,16 @@
     {:else}
       <Expenses />
     {/if}
-    {#if wallet.loading}
-      <div
-        class="fixed size-full flex justify-center items-center bg-white bg-opacity-50 z-50"
-      >
-        <LoaderCircle class="animate-spin text-indigo-600" size={64} />
-      </div>
-    {/if}
+    <BottomBar />
   {:else}
     <Login />
+  {/if}
+  {#if wallet.loading}
+    <div
+      class="fixed size-full flex justify-center items-center bg-white bg-opacity-50 z-50"
+    >
+      <LoaderCircle class="animate-spin text-indigo-600" size={64} />
+    </div>
   {/if}
 </main>
 

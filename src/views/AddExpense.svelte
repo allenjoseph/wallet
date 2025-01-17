@@ -10,8 +10,11 @@
   import { wallet } from "../state.svelte";
   import { CreditCard, ShoppingCart } from "lucide-svelte";
   import { loaderDecorator, toTimestamp } from "../lib/utils";
+  import Divider from "../components/Divider.svelte";
 
-  let expenseDate: string = $state(dayjs().format("YYYY-MM-DDTHH:mm"));
+  let expenseDate: string = $state(
+    dayjs(wallet.selectedExpense?.expenseDate).format("YYYY-MM-DDTHH:mm")
+  );
   const categories$ = getCategories();
   const sources$ = getSources();
 
@@ -36,7 +39,7 @@
 </script>
 
 <View>
-  <h1 class="text-2xl font-medium">Expense</h1>
+  <Divider>Add / Edit</Divider>
   <ExpenseAmount bind:amount={expense.amount} />
   <Input name="expenseDate" bind:value={expenseDate} type="datetime-local" />
   <Input name="name" bind:value={expense.name} />

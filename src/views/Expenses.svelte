@@ -32,7 +32,7 @@
   <Divider>{dayjs().format("MMMM YYYY")}</Divider>
   <ExpenseAmount bind:amount={total} readonly />
 
-  <Divider>Last expenses</Divider>
+  <Divider>Latest expenses</Divider>
   {#await expenses$}
     <small class="text-gray-600">Loading...</small>
   {:then expenses}

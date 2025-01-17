@@ -28,7 +28,7 @@
 <div
   class="border rounded-lg p-4 shadow-sm shadow-indigo-500 flex flex-col gap-2"
 >
-  <p class="text-sm text-gray-500">Expense</p>
+  <p class="text-sm text-gray-500">Amount</p>
   <button class="text-4xl font-medium self-start" onclick={onClick}>
     S/ <span class={[animate && "typewriter"]}>
       {readonly ? (amount?.toFixed(2) ?? "-.--") : amount}

@@ -1,12 +1,18 @@
 <script lang="ts">
   import { PiggyBank } from "lucide-svelte";
-  import { logIn } from "../lib/backend";
+  import { auth, logIn, postAuth } from "../lib/backend";
   import { wallet } from "../state.svelte";
   import Button from "../components/Button.svelte";
 
-  function signIn() {
-    logIn().then((user) => user && (wallet.user = user));
-  }
+  wallet.loading = true;
+
+  auth.onAuthStateChanged(async (user) => {
+    if (user) {
+      await postAuth(user);
+      wallet.user = user;
+    }
+    wallet.loading = false;
+  });
 </script>
 
 <div class="mx-auto max-w-screen-xl py-16 px-6">
@@ -24,7 +30,7 @@
       <p class="text-center text-sm text-gray-500">
         You need a Google account.
       </p>
-      <Button onClick={signIn}>Enter</Button>
+      <Button onClick={logIn}>Enter</Button>
     </form>
   </div>
 </div>

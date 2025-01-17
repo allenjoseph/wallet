@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import {
   getAuth,
   GoogleAuthProvider,
-  signInWithPopup,
+  signInWithRedirect,
   signOut,
   type UserInfo,
 } from "firebase/auth";
@@ -32,27 +32,25 @@ const app = initializeApp(getFirebaseConfig());
 const db = getFirestore(app);
 
 const provider = new GoogleAuthProvider();
-const auth = getAuth();
+export const auth = getAuth();
 
 const expensesRef = collection(db, "expenses");
 const categoriesRef = collection(db, "categories");
 const sourcesRef = collection(db, "sources");
 
 export async function logIn() {
-  return signInWithPopup(auth, provider)
-    .then(async (result: { user: UserInfo }) => {
-      sessionStorage.setItem("wallet_user", JSON.stringify(result.user));
-      await setDoc(doc(db, "users", result.user.uid), {
-        email: result.user.email,
-        displayName: result.user.displayName,
-        photoURL: result.user.photoURL,
-      });
-      return result.user;
-    })
-    .catch((error) => {
-      console.log({ error });
-      return null;
-    });
+  return signInWithRedirect(auth, provider).catch((error) => {
+    console.log({ error });
+  });
+}
+
+export async function postAuth(user: UserInfo) {
+  sessionStorage.setItem("wallet_user", JSON.stringify(user));
+  await setDoc(doc(db, "users", user.uid), {
+    email: user.email,
+    displayName: user.displayName,
+    photoURL: user.photoURL,
+  });
 }
 
 export async function logOut() {
@@ -92,7 +90,7 @@ async function addItem(docRef: CollectionReference, item: any) {
 }
 
 async function updateItem(docRef: CollectionReference, item: any) {
-  const data = { ...item, datetime: Timestamp.now() };
+  const data = { ...item, datetime: item.datetime ?? Timestamp.now() };
   delete data.id;
   return updateDoc(doc(docRef, item.id), data);
 }
