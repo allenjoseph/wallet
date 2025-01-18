@@ -3,7 +3,7 @@
 </script>
 
 <button
-  class="block w-full rounded-lg bg-indigo-600 px-5 py-3 font-medium text-white"
+  class="flex items-center justify-center rounded-full bg-indigo-600 px-6 h-10 font-medium text-white"
   onclick={onClick}
 >
   {@render children?.()}

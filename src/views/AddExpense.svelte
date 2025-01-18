@@ -7,10 +7,11 @@
   import View from "../components/View.svelte";
   import Input from "../components/Input.svelte";
   import type { Expense } from "../lib/types";
-  import { wallet } from "../state.svelte";
+  import { routes, wallet } from "../state.svelte";
   import { CreditCard, ShoppingCart } from "lucide-svelte";
   import { loaderDecorator, toTimestamp } from "../lib/utils";
   import Divider from "../components/Divider.svelte";
+  import MainCard from "../components/MainCard.svelte";
 
   let expenseDate: string = $state(
     dayjs(wallet.selectedExpense?.expenseDate).format("YYYY-MM-DDTHH:mm")
@@ -34,28 +35,32 @@
       ...expense,
       expenseDate: toTimestamp(dayjs(expenseDate).toDate()),
     });
-    wallet.menuSeleted = "expenses";
+    wallet.selectedMenu = routes.expenses;
   }
 </script>
 
 <View>
   <Divider>Add / Edit</Divider>
-  <ExpenseAmount bind:amount={expense.amount} />
-  <Input name="expenseDate" bind:value={expenseDate} type="datetime-local" />
-  <Input name="name" bind:value={expense.name} />
-  <div class="flex items-start gap-2 flex-wrap">
-    <BadgeDropdown
-      Icon={ShoppingCart}
-      bind:value={expense.category}
-      data$={categories$}
-      placeholder="Category"
-    />
-    <BadgeDropdown
-      Icon={CreditCard}
-      bind:value={expense.source}
-      data$={sources$}
-      placeholder="Source"
-    />
-  </div>
-  <Button onClick={loaderDecorator(onSave)}>Save</Button>
+  <MainCard>
+    <ExpenseAmount bind:amount={expense.amount} />
+    <Input name="expenseDate" bind:value={expenseDate} type="datetime-local" />
+    <Input name="name" bind:value={expense.name} />
+    <div class="flex items-start gap-2 flex-wrap">
+      <BadgeDropdown
+        Icon={ShoppingCart}
+        bind:value={expense.category}
+        data$={categories$}
+        placeholder="Category"
+      />
+      <BadgeDropdown
+        Icon={CreditCard}
+        bind:value={expense.source}
+        data$={sources$}
+        placeholder="Source"
+      />
+    </div>
+    <footer class="self-end">
+      <Button onClick={loaderDecorator(onSave)}>Save</Button>
+    </footer>
+  </MainCard>
 </View>

@@ -11,6 +11,7 @@ import {
   getAggregateFromServer,
   getDocs,
   getFirestore,
+  orderBy,
   query,
   sum,
   Timestamp,
@@ -90,20 +91,23 @@ async function addItem(docRef: CollectionReference, item: any) {
 }
 
 async function updateItem(docRef: CollectionReference, item: any) {
-  const data = { ...item, datetime: item.datetime ?? Timestamp.now() };
+  const data = { ...item, datetime: Timestamp.now() };
   delete data.id;
   return updateDoc(doc(docRef, item.id), data);
 }
 
-export const getExpenses = () => getItems<Expense>(expensesRef);
+export const getExpenses = () => getItems<Expense>(expensesRef, "expenseDate");
 export const getCategories = () => getItems(categoriesRef);
 export const getSources = () => getItems(sourcesRef);
 
 async function getItems<T = BaseDoc>(
-  docRef: CollectionReference
+  docRef: CollectionReference,
+  orderByField = "datetime"
 ): Promise<T[]> {
   const owner = getOwner();
-  const docs = await getDocs(query(docRef, where("owner", "==", owner)));
+  const docs = await getDocs(
+    query(docRef, where("owner", "==", owner), orderBy(orderByField, "desc"))
+  );
   return docs.docs.map((doc) => formatDoc(doc));
 }
 

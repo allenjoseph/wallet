@@ -3,39 +3,37 @@
   import type { BaseDoc } from "../lib/types";
 
   interface Props {
-    locked?: boolean;
-    small?: boolean;
-    data$?: Promise<BaseDoc[]>;
-    value?: BaseDoc;
-    placeholder?: string;
     Icon: any;
+    value?: BaseDoc;
+    data$: Promise<BaseDoc[]>;
+    placeholder?: string;
+    small?: boolean;
   }
 
   let {
+    Icon,
     value = $bindable(null as never),
     data$,
-    small,
-    locked,
     placeholder,
-    Icon,
+    small,
   }: Props = $props();
 
-  let editing = $state(false);
+  let isOpen = $state(false);
   let selectedItem = $state<BaseDoc>(value);
 
   function onSelect(category: BaseDoc) {
     value = category;
     selectedItem = category;
-    editing = false;
+    isOpen = false;
   }
 </script>
 
 <div class="relative">
-  <Badge click={() => (editing = !editing)} {Icon} {small}>
+  <Badge onclick={() => (isOpen = !isOpen)} {Icon} {small}>
     {selectedItem?.name ?? placeholder}
   </Badge>
 
-  {#if !locked && editing && data$}
+  {#if data$ && isOpen}
     <div
       class="absolute start-0 z-10 mt-2 rounded-lg border border-gray-100 bg-white shadow-lg"
       role="menu"

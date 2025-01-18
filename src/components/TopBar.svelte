@@ -1,9 +1,11 @@
 <script lang="ts">
-  import { Power } from "lucide-svelte";
+  import { EllipsisVertical, Power } from "lucide-svelte";
   import { logOut } from "../lib/backend";
-  import { menu, wallet } from "../state.svelte";
+  import { wallet } from "../state.svelte";
 
   let hasImage = $state(true);
+  let isSettingsOpen = $state(false);
+
   function imageFallback() {
     hasImage = false;
   }
@@ -13,8 +15,8 @@
   }
 </script>
 
-<div class="fixed flex w-screen h-14 bg-white z-20">
-  <div class="p-2 size-14 border-r border-gray-100">
+<div class="fixed flex w-screen h-14 bg-white z-20 p-2">
+  <div class="size-14 border-r border-gray-100">
     {#if hasImage}
       <img
         src={wallet.user.photoURL}
@@ -32,18 +34,32 @@
   </div>
 
   <div class="flex-1 flex items-center pl-2">
-    <h1 class="text-2xl">{menu[wallet.menuSeleted].title}</h1>
+    <h1 class="text-2xl">{wallet.selectedMenu.title}</h1>
   </div>
 
-  <div class="sticky inset-x-0 self-end bg-white p-2">
+  <div class="relative">
     <button
       class={[
-        "flex w-full justify-center items-center rounded-lg p-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700",
+        "flex justify-center items-center rounded-lg p-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700",
       ]}
-      title="Log out"
-      onclick={signOut}
+      title="Settings"
+      onclick={() => (isSettingsOpen = !isSettingsOpen)}
     >
-      <Power size={22} />
+      <EllipsisVertical size={24} />
     </button>
+    {#if isSettingsOpen}
+      <div
+        class="absolute end-0 z-10 rounded-lg border border-gray-100 bg-white shadow-lg p-1"
+        role="menu"
+      >
+        <button
+          class="rounded-lg px-4 py-2 text-left w-full text-nowrap hover:bg-gray-50 text-sm"
+          role="menuitem"
+          onclick={signOut}
+        >
+          Log out
+        </button>
+      </div>
+    {/if}
   </div>
 </div>

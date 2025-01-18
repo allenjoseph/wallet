@@ -4,9 +4,10 @@
   import View from "../components/View.svelte";
   import { deleteSource, getSources, saveSource } from "../lib/backend";
   import Divider from "../components/Divider.svelte";
-  import SourceCard from "../components/Card.svelte";
+  import Card from "../components/Card.svelte";
   import type { BaseDoc } from "../lib/types";
   import { loaderDecorator } from "../lib/utils";
+  import MainCard from "../components/MainCard.svelte";
 
   let source = $state<BaseDoc>({ name: "", description: "" });
   let sources$ = $state(getSources());
@@ -17,8 +18,8 @@
     sources$ = getSources();
   }
 
-  async function onEdit(source: BaseDoc) {
-    source = { ...source };
+  function onEdit(item: BaseDoc) {
+    source = { ...item };
   }
 
   async function onDelete(id: string) {
@@ -29,24 +30,26 @@
 
 <View>
   <Divider>Add / Edit</Divider>
-  <div class="flex flex-col gap-4">
+  <MainCard>
     <Input name="name" bind:value={source.name} />
     <Input name="description" bind:value={source.description} />
-    <Button onClick={loaderDecorator(onSave)}>Save</Button>
-  </div>
+    <footer class="self-end">
+      <Button onClick={loaderDecorator(onSave)}>Save</Button>
+    </footer>
+  </MainCard>
 
-  <Divider>Last sources</Divider>
+  <Divider>All sources</Divider>
   {#await sources$}
     <small class="text-gray-600">Loading...</small>
   {:then sources}
     {#if sources.length === 0}
       <small class="text-gray-600">No sources found.</small>
     {/if}
-    {#each sources as source}
-      <SourceCard
-        {...source}
-        onedit={() => onEdit(source)}
-        ondelete={loaderDecorator(() => onDelete(source.id!))}
+    {#each sources as item}
+      <Card
+        {...item}
+        onedit={() => onEdit(item)}
+        ondelete={loaderDecorator(() => onDelete(item.id!))}
       />
     {/each}
   {/await}

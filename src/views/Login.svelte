@@ -4,14 +4,14 @@
   import { wallet } from "../state.svelte";
   import Button from "../components/Button.svelte";
 
-  wallet.loading = true;
+  wallet.isLoading = true;
 
   auth.onAuthStateChanged(async (user) => {
     if (user) {
       await postAuth(user);
       wallet.user = user;
     }
-    wallet.loading = false;
+    wallet.isLoading = false;
   });
 </script>
 
@@ -25,7 +25,7 @@
 
     <form
       action="#"
-      class="mb-0 mt-6 space-y-4 rounded-lg border shadow-lg p-6 w-[320px]"
+      class="mb-0 mt-6 rounded-lg border shadow-lg p-6 w-[320px] flex flex-col gap-4"
     >
       <p class="text-center text-sm text-gray-500">
         You need a Google account.

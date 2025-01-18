@@ -7,18 +7,18 @@
   import AddCategory from "./views/AddCategory.svelte";
   import AddSource from "./views/AddSource.svelte";
   import Login from "./views/Login.svelte";
-  import { wallet } from "./state.svelte";
+  import { routes, wallet } from "./state.svelte";
   import { LoaderCircle } from "lucide-svelte";
 </script>
 
 <main class="flex">
   {#if wallet.user !== null}
     <TopBar />
-    {#if wallet.menuSeleted === "expense"}
+    {#if wallet.selectedMenu.path === "expense"}
       <AddExpense />
-    {:else if wallet.menuSeleted === "category"}
+    {:else if wallet.selectedMenu.path === "category"}
       <AddCategory />
-    {:else if wallet.menuSeleted === "source"}
+    {:else if wallet.selectedMenu.path === "source"}
       <AddSource />
     {:else}
       <Expenses />
@@ -27,7 +27,7 @@
   {:else}
     <Login />
   {/if}
-  {#if wallet.loading}
+  {#if wallet.isLoading}
     <div
       class="fixed size-full flex justify-center items-center bg-white bg-opacity-50 z-50"
     >

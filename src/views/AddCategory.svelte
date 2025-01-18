@@ -4,9 +4,10 @@
   import View from "../components/View.svelte";
   import { deleteCategory, getCategories, saveCategory } from "../lib/backend";
   import Divider from "../components/Divider.svelte";
-  import CategoryCard from "../components/Card.svelte";
+  import Card from "../components/Card.svelte";
   import type { BaseDoc } from "../lib/types";
   import { loaderDecorator } from "../lib/utils";
+  import MainCard from "../components/MainCard.svelte";
 
   let category = $state<BaseDoc>({ name: "", description: "" });
   let categories$ = $state(getCategories());
@@ -29,24 +30,26 @@
 
 <View>
   <Divider>Add / Edit</Divider>
-  <div class="flex flex-col gap-4">
+  <MainCard>
     <Input name="name" bind:value={category.name} />
     <Input name="description" bind:value={category.description} />
-    <Button onClick={loaderDecorator(onSave)}>Save</Button>
-  </div>
+    <footer class="self-end">
+      <Button onClick={loaderDecorator(onSave)}>Save</Button>
+    </footer>
+  </MainCard>
 
-  <Divider>Last categories</Divider>
+  <Divider>All categories</Divider>
   {#await categories$}
     <small class="text-gray-600">Loading...</small>
   {:then categories}
     {#if categories.length === 0}
       <small class="text-gray-600">No categories found.</small>
     {/if}
-    {#each categories as category}
-      <CategoryCard
-        {...category}
-        onedit={() => onEdit(category)}
-        ondelete={loaderDecorator(() => onDelete(category.id!))}
+    {#each categories as item}
+      <Card
+        {...item}
+        onedit={() => onEdit(item)}
+        ondelete={loaderDecorator(() => onDelete(item.id!))}
       />
     {/each}
   {/await}
