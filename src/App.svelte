@@ -1,25 +1,24 @@
 <script lang="ts">
-  import "./app.css";
-  import TopBar from "./components/TopBar.svelte";
-  import BottomBar from "./components/BottomBar.svelte";
-  import Expenses from "./views/Expenses.svelte";
-  import AddExpense from "./views/AddExpense.svelte";
-  import AddCategory from "./views/AddCategory.svelte";
-  import AddSource from "./views/AddSource.svelte";
-  import Login from "./views/Login.svelte";
-  import { routes, wallet } from "./state.svelte";
   import { LoaderCircle } from "lucide-svelte";
+  import TopBar from "./components/bars/TopBar.svelte";
+  import BottomBar from "./components/bars/BottomBar.svelte";
+  import Expenses from "./views/Expenses.svelte";
+  import Expense from "./views/Expense.svelte";
+  import Categories from "./views/Categories.svelte";
+  import Sources from "./views/Sources.svelte";
+  import Login from "./views/Login.svelte";
+  import { wallet } from "./lib/state.svelte";
 </script>
 
 <main class="flex">
   {#if wallet.user !== null}
     <TopBar />
-    {#if wallet.selectedMenu.path === "expense"}
-      <AddExpense />
-    {:else if wallet.selectedMenu.path === "category"}
-      <AddCategory />
-    {:else if wallet.selectedMenu.path === "source"}
-      <AddSource />
+    {#if wallet.selectedRoute.path === "expense"}
+      <Expense />
+    {:else if wallet.selectedRoute.path === "category"}
+      <Categories />
+    {:else if wallet.selectedRoute.path === "source"}
+      <Sources />
     {:else}
       <Expenses />
     {/if}
@@ -35,6 +34,3 @@
     </div>
   {/if}
 </main>
-
-<style lang="postcss">
-</style>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { EllipsisVertical, Power } from "lucide-svelte";
-  import { logOut } from "../lib/backend";
-  import { wallet } from "../state.svelte";
+  import { logOut } from "../../lib/backend";
+  import { wallet } from "../../lib/state.svelte";
 
   let hasImage = $state(true);
   let isSettingsOpen = $state(false);
@@ -34,7 +34,7 @@
   </div>
 
   <div class="flex-1 flex items-center pl-2">
-    <h1 class="text-2xl">{wallet.selectedMenu.title}</h1>
+    <h1 class="text-2xl">{wallet.selectedRoute.title}</h1>
   </div>
 
   <div class="relative">

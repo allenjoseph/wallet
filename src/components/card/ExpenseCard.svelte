@@ -1,8 +1,8 @@
 <script lang="ts">
   import dayjs from "dayjs";
   import { CreditCard, ArrowRight, ShoppingCart, Trash2 } from "lucide-svelte";
-  import type { Expense } from "../lib/types";
-  import Badge from "./Badge.svelte";
+  import type { Expense } from "../../lib/types";
+  import Badge from "../badge/Badge.svelte";
 
   interface Props extends Expense {
     ondelete: () => void;
@@ -12,7 +12,9 @@
   const { ondelete, onedit, ...expense }: Props = $props();
 </script>
 
-<div class="relative border rounded-lg p-4 shadow-sm shadow-indigo-100">
+<div
+  class="relative border rounded-lg p-4 shadow-sm shadow-indigo-100 space-y-2"
+>
   <div class="flex justify-between items-center">
     <p class="text-xs text-gray-500">
       {dayjs(expense.expenseDate).format("ddd D MMM h:mm A")}
@@ -29,7 +31,7 @@
       S/ {expense.amount.toFixed(2)}
     </p>
   </div>
-  <div class="mt-2 flex items-center gap-2 text-xs">
+  <div class="flex items-center gap-2 text-xs">
     <Badge Icon={ShoppingCart} small>
       {expense.category.name}
     </Badge>

@@ -1,15 +1,17 @@
 <script lang="ts">
   import { CornerUpLeft, Plus } from "lucide-svelte";
-  import { routes, wallet, type Menu } from "../state.svelte";
-  import MenuItem from "./MenuItem.svelte";
+  import { wallet } from "../../lib/state.svelte";
+  import MenuItem from "../MenuItem.svelte";
+  import type { Route } from "../../lib/types";
+  import { routes } from "../../lib/routes";
 
-  function onSelectMenu(item: Menu) {
+  function onSelectMenu(item: Route) {
     wallet.selectedExpense = null;
-    wallet.selectedMenu = item;
+    wallet.selectedRoute = item;
   }
 
-  function onSelectRigthAction() {
-    wallet.selectedMenu = wallet.selectedMenu.menuAdd ?? routes.expenses;
+  function onSelectAdd() {
+    wallet.selectedRoute = wallet.selectedRoute.routeAdd ?? routes.expenses;
   }
 </script>
 
@@ -21,7 +23,7 @@
       <li class="size-12 flex">
         <MenuItem
           title={item.title}
-          selected={wallet.selectedMenu.path === item.path}
+          selected={wallet.selectedRoute.path === item.path}
           onSelect={() => onSelectMenu(item)}
         >
           <item.Icon size={24} />
@@ -33,9 +35,9 @@
     class={[
       "rounded-lg p-4 flex items-center justify-center bg-indigo-50 text-indigo-600",
     ]}
-    onclick={onSelectRigthAction}
+    onclick={onSelectAdd}
   >
-    {#if wallet.selectedMenu.menuAdd}
+    {#if wallet.selectedRoute.routeAdd}
       <Plus size={24} />
     {:else}
       <CornerUpLeft size={24} />

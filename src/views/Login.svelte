@@ -1,7 +1,7 @@
 <script lang="ts">
   import { PiggyBank } from "lucide-svelte";
   import { auth, logIn, postAuth } from "../lib/backend";
-  import { wallet } from "../state.svelte";
+  import { wallet } from "../lib/state.svelte";
   import Button from "../components/Button.svelte";
 
   wallet.isLoading = true;

@@ -1,17 +1,18 @@
 <script lang="ts">
   import dayjs from "dayjs";
-  import ExpenseAmount from "../components/ExpenseAmount.svelte";
-  import BadgeDropdown from "../components/BadgeDropdown.svelte";
+  import ExpenseAmount from "../components/expense/ExpenseAmount.svelte";
+  import DropdownBadge from "../components/badge/DropdownBadge.svelte";
   import { saveExpense, getCategories, getSources } from "../lib/backend";
   import Button from "../components/Button.svelte";
   import View from "../components/View.svelte";
   import Input from "../components/Input.svelte";
   import type { Expense } from "../lib/types";
-  import { routes, wallet } from "../state.svelte";
+  import { wallet } from "../lib/state.svelte";
   import { CreditCard, ShoppingCart } from "lucide-svelte";
   import { loaderDecorator, toTimestamp } from "../lib/utils";
   import Divider from "../components/Divider.svelte";
-  import MainCard from "../components/MainCard.svelte";
+  import MainCard from "../components/card/MainCard.svelte";
+  import { routes } from "../lib/routes";
 
   let expenseDate: string = $state(
     dayjs(wallet.selectedExpense?.expenseDate).format("YYYY-MM-DDTHH:mm")
@@ -35,7 +36,7 @@
       ...expense,
       expenseDate: toTimestamp(dayjs(expenseDate).toDate()),
     });
-    wallet.selectedMenu = routes.expenses;
+    wallet.selectedRoute = routes.expenses;
   }
 </script>
 
@@ -46,13 +47,13 @@
     <Input name="expenseDate" bind:value={expenseDate} type="datetime-local" />
     <Input name="name" bind:value={expense.name} />
     <div class="flex items-start gap-2 flex-wrap">
-      <BadgeDropdown
+      <DropdownBadge
         Icon={ShoppingCart}
         bind:value={expense.category}
         data$={categories$}
         placeholder="Category"
       />
-      <BadgeDropdown
+      <DropdownBadge
         Icon={CreditCard}
         bind:value={expense.source}
         data$={sources$}

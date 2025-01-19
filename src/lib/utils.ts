@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
-import { Timestamp } from "firebase/firestore";
-import { wallet } from "../state.svelte";
-
 dayjs.extend(isBetween);
+
+import { Timestamp } from "firebase/firestore";
+import { wallet } from "./state.svelte";
 
 export function loaderDecorator(cb: () => Promise<any>) {
   return async () => {

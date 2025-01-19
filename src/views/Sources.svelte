@@ -4,10 +4,10 @@
   import View from "../components/View.svelte";
   import { deleteSource, getSources, saveSource } from "../lib/backend";
   import Divider from "../components/Divider.svelte";
-  import Card from "../components/Card.svelte";
+  import Card from "../components/card/Card.svelte";
   import type { BaseDoc } from "../lib/types";
   import { loaderDecorator } from "../lib/utils";
-  import MainCard from "../components/MainCard.svelte";
+  import MainCard from "../components/card/MainCard.svelte";
 
   let source = $state<BaseDoc>({ name: "", description: "" });
   let sources$ = $state(getSources());

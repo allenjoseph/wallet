@@ -1,7 +1,7 @@
 <script lang="ts">
   import { ListFilter } from "lucide-svelte";
-  import { getSources } from "../lib/backend";
-  import Badge from "./Badge.svelte";
+  import { getSources } from "../../lib/backend";
+  import Badge from "../badge/Badge.svelte";
 
   let { onclick, selected } = $props();
 

@@ -1,6 +1,6 @@
 <script lang="ts">
   import Badge from "./Badge.svelte";
-  import type { BaseDoc } from "../lib/types";
+  import type { BaseDoc } from "../../lib/types";
 
   interface Props {
     Icon: any;

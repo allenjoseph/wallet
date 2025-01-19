@@ -1,14 +1,15 @@
 <script lang="ts">
   import Divider from "../components/Divider.svelte";
-  import ExpenseCard from "../components/ExpenseCard.svelte";
+  import ExpenseCard from "../components/card/ExpenseCard.svelte";
   import View from "../components/View.svelte";
   import { deleteExpense, getExpenses } from "../lib/backend";
-  import { routes, wallet } from "../state.svelte";
+  import { wallet } from "../lib/state.svelte";
   import type { BaseDoc, Expense } from "../lib/types";
-  import ExpenseAmount from "../components/ExpenseAmount.svelte";
+  import ExpenseAmount from "../components/expense/ExpenseAmount.svelte";
   import { dateInCurrentMonth, loaderDecorator, today } from "../lib/utils";
-  import Filters from "../components/Filters.svelte";
-  import MainCard from "../components/MainCard.svelte";
+  import ExpenseFilters from "../components/expense/ExpenseFilters.svelte";
+  import MainCard from "../components/card/MainCard.svelte";
+  import { routes } from "../lib/routes";
 
   let allExpenses = $state<Expense[]>();
   let fSourceId = $state<string>();
@@ -27,7 +28,7 @@
 
   function onEdit(expense: Expense) {
     wallet.selectedExpense = { ...expense };
-    wallet.selectedMenu = routes.expenses.menuAdd!;
+    wallet.selectedRoute = routes.expenses.routeAdd!;
   }
 
   async function onDelete(id: string) {
@@ -45,7 +46,7 @@
   <MainCard>
     <ExpenseAmount amount={total} readonly />
   </MainCard>
-  <Filters onclick={onFilter} selected={fSourceId} />
+  <ExpenseFilters onclick={onFilter} selected={fSourceId} />
 
   <Divider>All expenses</Divider>
   {#if !expenses}
