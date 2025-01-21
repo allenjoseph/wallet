@@ -8,12 +8,11 @@ import {
 } from "firebase/auth";
 import {
   CollectionReference,
-  getAggregateFromServer,
   getDocs,
   getFirestore,
   orderBy,
   query,
-  sum,
+  QueryConstraint,
   Timestamp,
   where,
 } from "firebase/firestore";
@@ -25,8 +24,8 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
+import { Dayjs } from "dayjs";
 import type { BaseDoc, Expense } from "./types";
-import dayjs from "dayjs";
 import { toTimestamp } from "./utils";
 
 const app = initializeApp(getFirebaseConfig());
@@ -64,19 +63,6 @@ export async function logOut() {
     });
 }
 
-export async function getTotal() {
-  const owner = getOwner();
-  const snapshot = await getAggregateFromServer(
-    query(
-      expensesRef,
-      where("owner", "==", owner),
-      where("expenseDate", ">=", toTimestamp(dayjs().startOf("month").toDate()))
-    ),
-    { total: sum("amount") }
-  );
-  return snapshot.data().total;
-}
-
 export const saveExpense = saveItem.bind(null, expensesRef);
 export const saveCategory = saveItem.bind(null, categoriesRef);
 export const saveSource = saveItem.bind(null, sourcesRef);
@@ -96,18 +82,32 @@ async function updateItem(docRef: CollectionReference, item: any) {
   return updateDoc(doc(docRef, item.id), data);
 }
 
-export const getExpenses = () => getItems<Expense>(expensesRef, "expenseDate");
 export const getCategories = () => getItems(categoriesRef);
 export const getSources = () => getItems(sourcesRef);
+export const getExpenses = (date: Dayjs) => {
+  const from = toTimestamp(date.toDate());
+  const to = toTimestamp(date.add(1, "month").toDate());
+
+  const constraints = [
+    where("expenseDate", ">=", from),
+    where("expenseDate", "<=", to),
+  ];
+  return getItems<Expense>(expensesRef, "expenseDate", constraints);
+};
 
 async function getItems<T = BaseDoc>(
   docRef: CollectionReference,
-  orderByField = "datetime"
+  orderByField = "datetime",
+  constraints: QueryConstraint[] = []
 ): Promise<T[]> {
   const owner = getOwner();
-  const docs = await getDocs(
-    query(docRef, where("owner", "==", owner), orderBy(orderByField, "desc"))
-  );
+  constraints = [
+    where("owner", "==", owner),
+    ...constraints,
+    orderBy(orderByField, "desc"),
+  ];
+  console.log(constraints);
+  const docs = await getDocs(query(docRef, ...constraints));
   return docs.docs.map((doc) => formatDoc(doc));
 }
 

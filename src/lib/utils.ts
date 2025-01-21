@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
 
@@ -17,13 +17,9 @@ export function toTimestamp(date: Date) {
   return Timestamp.fromDate(date);
 }
 
-export function today() {
-  return dayjs();
-}
-
-export function dateInCurrentMonth(date: Date) {
+export function dateWithinMonthRange(monthDay: Dayjs, date: Date) {
   return dayjs(date).isBetween(
-    dayjs().startOf("month"),
-    dayjs().endOf("month")
+    monthDay.startOf("day"),
+    monthDay.add(1, "month").endOf("day")
   );
 }

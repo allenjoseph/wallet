@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { EllipsisVertical, Power } from "lucide-svelte";
+  import { EllipsisVertical } from "lucide-svelte";
   import { logOut } from "../../lib/backend";
   import { wallet } from "../../lib/state.svelte";
 
@@ -16,7 +16,7 @@
 </script>
 
 <div class="fixed flex w-screen h-14 bg-white z-20 p-2">
-  <div class="size-14 border-r border-gray-100">
+  <div class="size-14">
     {#if hasImage}
       <img
         src={wallet.user.photoURL}

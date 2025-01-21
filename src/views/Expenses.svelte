@@ -1,4 +1,6 @@
 <script lang="ts">
+  import dayjs from "dayjs";
+  import type { Dayjs } from "dayjs";
   import Divider from "../components/Divider.svelte";
   import ExpenseCard from "../components/card/ExpenseCard.svelte";
   import View from "../components/View.svelte";
@@ -6,15 +8,15 @@
   import { wallet } from "../lib/state.svelte";
   import type { BaseDoc, Expense } from "../lib/types";
   import ExpenseAmount from "../components/expense/ExpenseAmount.svelte";
-  import { dateInCurrentMonth, loaderDecorator, today } from "../lib/utils";
+  import { dateWithinMonthRange, loaderDecorator } from "../lib/utils";
   import ExpenseFilters from "../components/expense/ExpenseFilters.svelte";
   import MainCard from "../components/card/MainCard.svelte";
   import { routes } from "../lib/routes";
+  import ExpenseMonthlyPeriodDay from "../components/expense/ExpenseMonthlyPeriodDay.svelte";
 
   let allExpenses = $state<Expense[]>();
   let fSourceId = $state<string>();
-
-  getExpenses().then((data) => (allExpenses = data));
+  let monthDay = $state<Dayjs>(dayjs().startOf("month"));
 
   let expenses = $derived(
     allExpenses?.filter((o) => (fSourceId ? o.source.id === fSourceId : true))
@@ -22,7 +24,7 @@
 
   let total = $derived(
     expenses
-      ?.filter((i) => dateInCurrentMonth(i.expenseDate))
+      ?.filter((i) => dateWithinMonthRange(monthDay, i.expenseDate))
       .reduce((acc, i) => acc + i.amount, 0)
   );
 
@@ -33,16 +35,24 @@
 
   async function onDelete(id: string) {
     await deleteExpense(id);
-    // expenses$ = getExpenses().then(setExpenses);
+    allExpenses = allExpenses?.filter((o) => o.id !== id);
   }
 
   function onFilter(source: BaseDoc) {
     fSourceId = fSourceId === source.id ? undefined : source.id;
   }
+
+  $effect(() => {
+    if (monthDay) {
+      getExpenses(monthDay).then((data) => (allExpenses = data));
+    }
+  });
 </script>
 
 <View>
-  <Divider>{today().format("MMMM YYYY")}</Divider>
+  <Divider>
+    <ExpenseMonthlyPeriodDay bind:day={monthDay} />
+  </Divider>
   <MainCard>
     <ExpenseAmount amount={total} readonly />
   </MainCard>
