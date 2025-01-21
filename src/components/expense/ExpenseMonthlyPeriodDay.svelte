@@ -14,6 +14,7 @@
   $effect(() => {
     if (dayStr !== day.format("YYYY-MM-DD")) {
       day = dayjs(dayStr).startOf("day");
+      localStorage.setItem("monthlyPeriodDay", dayStr);
     }
   });
 </script>

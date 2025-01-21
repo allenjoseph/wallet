@@ -1,6 +1,4 @@
 <script lang="ts">
-  import dayjs from "dayjs";
-  import type { Dayjs } from "dayjs";
   import Divider from "../components/Divider.svelte";
   import ExpenseCard from "../components/card/ExpenseCard.svelte";
   import View from "../components/View.svelte";
@@ -16,7 +14,6 @@
 
   let allExpenses = $state<Expense[]>();
   let fSourceId = $state<string>();
-  let monthDay = $state<Dayjs>(dayjs().startOf("month"));
 
   let expenses = $derived(
     allExpenses?.filter((o) => (fSourceId ? o.source.id === fSourceId : true))
@@ -24,7 +21,9 @@
 
   let total = $derived(
     expenses
-      ?.filter((i) => dateWithinMonthRange(monthDay, i.expenseDate))
+      ?.filter((i) =>
+        dateWithinMonthRange(wallet.monthlyPeriodDay, i.expenseDate)
+      )
       .reduce((acc, i) => acc + i.amount, 0)
   );
 
@@ -43,15 +42,15 @@
   }
 
   $effect(() => {
-    if (monthDay) {
-      getExpenses(monthDay).then((data) => (allExpenses = data));
+    if (wallet.monthlyPeriodDay) {
+      getExpenses(wallet.monthlyPeriodDay).then((data) => (allExpenses = data));
     }
   });
 </script>
 
 <View>
   <Divider>
-    <ExpenseMonthlyPeriodDay bind:day={monthDay} />
+    <ExpenseMonthlyPeriodDay bind:day={wallet.monthlyPeriodDay} />
   </Divider>
   <MainCard>
     <ExpenseAmount amount={total} readonly />
