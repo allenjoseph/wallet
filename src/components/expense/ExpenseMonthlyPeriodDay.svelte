@@ -18,7 +18,7 @@
   });
 </script>
 
-<span class="relative">
+<span class="relative block">
   <button
     type="button"
     class="text-indigo-700 flex items-center gap-1"
@@ -29,7 +29,8 @@
   </button>
   <input
     type="date"
-    class="absolute p-0 opacity-0 w-0 h-0 overflow-hidden -bottom-4 -left-4"
+    class="absolute w-full opacity-0 top-0 p-0"
+    onkeydown={(e) => e.preventDefault()}
     bind:value={dayStr}
     bind:this={dayInput$}
   />
