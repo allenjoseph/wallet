@@ -4,28 +4,28 @@
   import View from "../components/View.svelte";
   import { deleteExpense, getExpenses } from "../lib/backend";
   import { wallet } from "../lib/state.svelte";
-  import type { BaseDoc, Expense } from "../lib/types";
+  import {
+    FilterType,
+    type BaseDoc,
+    type Expense,
+    type Filter,
+  } from "../lib/types";
   import ExpenseAmount from "../components/expense/ExpenseAmount.svelte";
-  import { dateWithinMonthRange, loaderDecorator } from "../lib/utils";
+  import {
+    sumMonthPeriod,
+    filterExpenses,
+    loaderDecorator,
+  } from "../lib/utils";
   import ExpenseFilters from "../components/expense/ExpenseFilters.svelte";
   import MainCard from "../components/card/MainCard.svelte";
   import { routes } from "../lib/routes";
   import ExpenseMonthlyPeriodDay from "../components/expense/ExpenseMonthlyPeriodDay.svelte";
 
   let allExpenses = $state<Expense[]>();
-  let fSourceId = $state<string>();
+  let fSelected = $state<Filter>();
 
-  let expenses = $derived(
-    allExpenses?.filter((o) => (fSourceId ? o.source.id === fSourceId : true))
-  );
-
-  let total = $derived(
-    expenses
-      ?.filter((i) =>
-        dateWithinMonthRange(wallet.monthlyPeriodDay, i.expenseDate)
-      )
-      .reduce((acc, i) => acc + i.amount, 0)
-  );
+  let expenses = $derived(filterExpenses(allExpenses, fSelected));
+  let total = $derived(sumMonthPeriod(expenses, wallet.monthlyPeriodDay));
 
   function onEdit(expense: Expense) {
     wallet.selectedExpense = { ...expense };
@@ -37,8 +37,9 @@
     allExpenses = allExpenses?.filter((o) => o.id !== id);
   }
 
-  function onFilter(source: BaseDoc) {
-    fSourceId = fSourceId === source.id ? undefined : source.id;
+  function onFilter(type: FilterType, item: BaseDoc) {
+    fSelected =
+      !item.id || fSelected?.id === item.id ? undefined : { type, id: item.id };
   }
 
   $effect(() => {
@@ -55,7 +56,7 @@
   <MainCard>
     <ExpenseAmount amount={total} readonly />
   </MainCard>
-  <ExpenseFilters onclick={onFilter} selected={fSourceId} />
+  <ExpenseFilters onclick={onFilter} selected={fSelected?.id} />
 
   <Divider>All expenses</Divider>
   {#if !expenses}
