@@ -1,4 +1,10 @@
-import { CreditCard, HandCoins, PiggyBank, ShoppingCart } from "lucide-svelte";
+import {
+  ChartNoAxesCombined,
+  CreditCard,
+  HandCoins,
+  PiggyBank,
+  ShoppingCart,
+} from "lucide-svelte";
 import type { Route } from "./types";
 
 export const routes = {
@@ -14,4 +20,9 @@ export const routes = {
     Icon: ShoppingCart,
   } as Route,
   source: { title: "Source", path: "source", Icon: CreditCard } as Route,
+  charts: {
+    title: "Charts",
+    path: "charts",
+    Icon: ChartNoAxesCombined,
+  } as Route,
 };

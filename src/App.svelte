@@ -7,6 +7,7 @@
   import Categories from "./views/Categories.svelte";
   import Sources from "./views/Sources.svelte";
   import Login from "./views/Login.svelte";
+  import Charts from "./views/Charts.svelte";
   import { wallet } from "./lib/state.svelte";
 </script>
 
@@ -19,6 +20,8 @@
       <Categories />
     {:else if wallet.selectedRoute.path === "source"}
       <Sources />
+    {:else if wallet.selectedRoute.path === "charts"}
+      <Charts />
     {:else}
       <Expenses />
     {/if}

@@ -106,7 +106,6 @@ async function getItems<T = BaseDoc>(
     ...constraints,
     orderBy(orderByField, "desc"),
   ];
-  console.log(constraints);
   const docs = await getDocs(query(docRef, ...constraints));
   return docs.docs.map((doc) => formatDoc(doc));
 }

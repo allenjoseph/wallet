@@ -26,6 +26,7 @@
     "vite": "^6.0.5"
   },
   "dependencies": {
+    "apexcharts": "^4.4.0",
     "dayjs": "^1.11.13",
     "firebase": "^11.1.0",
     "lucide-svelte": "^0.469.0"
