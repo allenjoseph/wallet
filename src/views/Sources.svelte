@@ -12,6 +12,8 @@
   let source = $state<BaseDoc>({ name: "", description: "" });
   let sources$ = $state(getSources());
 
+  let isInvalid = $derived(!source.name || !source.description);
+
   async function onSave() {
     await saveSource({ ...source });
     source = { name: "", description: "" };
@@ -34,7 +36,9 @@
     <Input name="name" bind:value={source.name} />
     <Input name="description" bind:value={source.description} />
     <footer class="self-end">
-      <Button onClick={loaderDecorator(onSave)}>Save</Button>
+      <Button onClick={loaderDecorator(onSave)} disabled={isInvalid}>
+        Save
+      </Button>
     </footer>
   </MainCard>
 

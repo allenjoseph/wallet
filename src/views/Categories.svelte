@@ -12,6 +12,8 @@
   let category = $state<BaseDoc>({ name: "", description: "" });
   let categories$ = $state(getCategories());
 
+  let isInvalid = $derived(!category.name || !category.description);
+
   async function onSave() {
     await saveCategory({ ...category });
     category = { name: "", description: "" };
@@ -34,7 +36,9 @@
     <Input name="name" bind:value={category.name} />
     <Input name="description" bind:value={category.description} />
     <footer class="self-end">
-      <Button onClick={loaderDecorator(onSave)}>Save</Button>
+      <Button onClick={loaderDecorator(onSave)} disabled={isInvalid}>
+        Save
+      </Button>
     </footer>
   </MainCard>
 

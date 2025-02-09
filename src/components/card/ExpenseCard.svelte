@@ -20,7 +20,7 @@
       {dayjs(expense.expenseDate).format("ddd D MMM h:mm A")}
     </p>
     <button class="text-sm text-indigo-500" onclick={onedit}>
-      <ArrowRight size={16} />
+      <ArrowRight size={18} />
     </button>
   </div>
   <div class="flex justify-between items-center gap-4">
@@ -43,6 +43,6 @@
     class="absolute bottom-4 right-4 text-sm text-red-500"
     onclick={ondelete}
   >
-    <Trash2 size={16} />
+    <Trash2 size={18} />
   </button>
 </div>

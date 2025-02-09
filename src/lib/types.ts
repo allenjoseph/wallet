@@ -28,3 +28,8 @@ export interface Filter {
   type: FilterType;
   id: string;
 }
+
+export interface ChartSerie {
+  name: string;
+  data: number[];
+}

@@ -23,13 +23,13 @@
     class="absolute top-4 right-4 text-indigo-500 bg-white"
     onclick={onedit}
   >
-    <Pencil size={16} />
+    <Pencil size={18} />
   </button>
   <button
     class="absolute bottom-4 right-4 text-sm text-red-500 bg-white"
     onclick={ondelete}
   >
-    <Trash2 size={16} />
+    <Trash2 size={18} />
   </button>
   <div class="absolute bottom-4 right-4"></div>
 </div>

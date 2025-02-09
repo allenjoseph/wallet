@@ -31,6 +31,10 @@
     }
   );
 
+  let isInvalid = $derived(
+    !expense.category || !expense.source || !expense.name || !expense.amount
+  );
+
   async function onSave() {
     await saveExpense({
       ...expense,
@@ -61,7 +65,9 @@
       />
     </div>
     <footer class="self-end">
-      <Button onClick={loaderDecorator(onSave)}>Save</Button>
+      <Button onClick={loaderDecorator(onSave)} disabled={isInvalid}>
+        Save
+      </Button>
     </footer>
   </MainCard>
 </View>
