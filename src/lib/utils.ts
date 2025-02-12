@@ -57,7 +57,7 @@ export function getSeriesData(expenses: Expense[], cutoff: dayjs.Dayjs) {
   const range4 = cutoff.add(1, "M");
 
   const series = expenses.reduce((acc, e) => {
-    const date = dayjs(e.datetime);
+    const date = dayjs(e.expenseDate);
     if (date.isBetween(range1, range2, "day", "[)")) {
       addExpenseInSerie(acc, e, 0);
     } else if (date.isBetween(range2, range3, "day", "[)")) {
@@ -74,11 +74,11 @@ export function getSeriesData(expenses: Expense[], cutoff: dayjs.Dayjs) {
 function addExpenseInSerie(
   series: ChartSerie[],
   expense: Expense,
-  month: number
+  rangeIndex: number
 ) {
   const serie = series.find((s) => s.name === expense.category.name);
   if (serie) {
-    serie.data[month] += Math.trunc(expense.amount);
+    serie.data[rangeIndex] += Math.trunc(expense.amount);
   }
 }
 

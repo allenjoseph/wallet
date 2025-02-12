@@ -21,7 +21,11 @@
   class={[
     "inline-flex items-center justify-center rounded-full",
     small ? "px-2 py-1 gap-1" : "px-4 py-1 gap-2",
-    selected ? "bg-green-200 text-green-800" : "bg-indigo-100 text-indigo-700",
+    selected
+      ? "bg-green-200 text-green-800"
+      : disabled
+        ? "bg-gray-100 text-gray-400"
+        : "bg-indigo-100 text-indigo-700",
   ]}
   {onclick}
   disabled={!onclick || disabled}

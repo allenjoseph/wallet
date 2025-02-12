@@ -84,13 +84,15 @@ async function updateItem(docRef: CollectionReference, item: any) {
 
 export const getCategories = () => getItems(categoriesRef);
 export const getSources = () => getItems(sourcesRef);
-export const getExpenses = (date: Dayjs) => {
-  const from = toTimestamp(date.toDate());
-  const to = toTimestamp(date.add(1, "month").toDate());
+export const getExpenses = (fromDay: Dayjs, toDay?: Dayjs) => {
+  const from = toTimestamp(fromDay.startOf("day").toDate());
+  const to = toTimestamp(
+    toDay ? toDay.startOf("day").toDate() : fromDay.add(1, "month").toDate()
+  );
 
   const constraints = [
     where("expenseDate", ">=", from),
-    where("expenseDate", "<=", to),
+    where("expenseDate", "<", to),
   ];
   return getItems<Expense>(expensesRef, "expenseDate", constraints);
 };

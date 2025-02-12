@@ -17,9 +17,10 @@
 
   onMount(() => {
     const series = getSeriesData(expenses, cutoff);
+    const indexRangeLastMonth = 2;
 
     chartDonut = new ApexCharts(document.querySelector("#chart-donut"), {
-      series: series.map((s) => s.data[2]),
+      series: series.map((s) => s.data[indexRangeLastMonth]),
       chart: { type: "donut", height: 320, toolbar: { show: false } },
       labels: series.map((s) => s.name),
       dataLabels: {

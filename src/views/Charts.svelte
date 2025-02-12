@@ -10,6 +10,8 @@
   import Badge from "../components/badge/Badge.svelte";
 
   let cutoff = $state(wallet.monthlyPeriodDay.clone());
+  let from = $derived(cutoff.subtract(2, "M")); // two months ago
+  let to = $derived(cutoff.add(1, "M")); // one month ahead
 </script>
 
 <View>
@@ -18,10 +20,10 @@
   </Divider>
   <div class="flex items-start gap-2 flex-wrap">
     <Badge Icon={ShoppingCart} selected>Category</Badge>
-    <Badge Icon={CreditCard}>Source</Badge>
+    <Badge Icon={CreditCard} disabled>Source</Badge>
   </div>
-  {#await getExpenses(cutoff) then expenses}
-    <ChartDonut {expenses} {cutoff} />
-    <ChartBar {expenses} {cutoff} />
+  {#await getExpenses(from, to) then expensesLastThreeMonths}
+    <ChartDonut expenses={expensesLastThreeMonths} {cutoff} />
+    <ChartBar expenses={expensesLastThreeMonths} {cutoff} />
   {/await}
 </View>
