@@ -19,13 +19,13 @@ export interface Expense extends BaseDoc {
   source: BaseDoc;
 }
 
-export enum FilterType {
-  Sources = "sources",
-  Categories = "categories",
+export enum ExpenseFilter {
+  Source = "source",
+  Category = "category",
 }
 
 export interface Filter {
-  type: FilterType;
+  name: ExpenseFilter;
   id: string;
 }
 

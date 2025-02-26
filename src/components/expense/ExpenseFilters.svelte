@@ -2,33 +2,33 @@
   import { ChevronsDown, ListFilter } from "lucide-svelte";
   import { getCategories, getSources } from "../../lib/backend";
   import Badge from "../badge/Badge.svelte";
-  import { FilterType } from "../../lib/types";
+  import { ExpenseFilter } from "../../lib/types";
 
   let { onclick, selected } = $props();
 
-  let active = $state<FilterType>(FilterType.Sources);
+  let active = $state<ExpenseFilter>(ExpenseFilter.Source);
 
   let sources$ = $state(getSources());
   let categories$ = $state(getCategories());
 
   function toggle() {
     active =
-      active === FilterType.Sources
-        ? FilterType.Categories
-        : FilterType.Sources;
+      active === ExpenseFilter.Source
+        ? ExpenseFilter.Category
+        : ExpenseFilter.Source;
   }
 </script>
 
 <div class="relative w-full h-6 overflow-hidden">
   <div
-    class={["filters flex gap-2", active === FilterType.Sources && "active"]}
+    class={["filters flex gap-2", active === ExpenseFilter.Source && "active"]}
   >
     {#await sources$}
-      {@render skeletom()}
+      {@render skeleton()}
     {:then sources}
       {#each sources as item}
         <Badge
-          onclick={() => onclick(FilterType.Sources, item)}
+          onclick={() => onclick(ExpenseFilter.Source, item)}
           Icon={ListFilter}
           selected={item.id === selected}
           small
@@ -39,14 +39,17 @@
     {/await}
   </div>
   <div
-    class={["filters flex gap-2", active === FilterType.Categories && "active"]}
+    class={[
+      "filters flex gap-2",
+      active === ExpenseFilter.Category && "active",
+    ]}
   >
     {#await categories$}
-      {@render skeletom()}
+      {@render skeleton()}
     {:then categories}
       {#each categories as item}
         <Badge
-          onclick={() => onclick(FilterType.Categories, item)}
+          onclick={() => onclick(ExpenseFilter.Category, item)}
           Icon={ListFilter}
           selected={item.id === selected}
           small
@@ -65,7 +68,7 @@
   </button>
 </div>
 
-{#snippet skeletom(length = 3)}
+{#snippet skeleton(length = 3)}
   <div class="animate-pulse flex gap-2">
     {#each Array.from({ length }, (_, i) => i + 1)}
       <div class="w-16 h-6 bg-slate-200 rounded-full"></div>

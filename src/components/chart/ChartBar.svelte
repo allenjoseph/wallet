@@ -1,14 +1,35 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import ApexCharts from "apexcharts";
   import type { Dayjs } from "dayjs";
   import type { ChartSerie } from "../../lib/types";
   import { getSeriesData } from "../../lib/utils";
   import Divider from "../Divider.svelte";
 
-  let { expenses, cutoff } = $props();
+  let { expenses, cutoff, groupBy } = $props();
 
-  let chartBar = $state<ApexCharts>();
+  let divChart: HTMLDivElement;
+  let apexChart = $state<ApexCharts>();
+
+  const series = $derived(getSeriesData(expenses, cutoff, groupBy));
+  const chartConfig = $derived({
+    series,
+    chart: { type: "bar", height: 320, toolbar: { show: false } },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: "80%",
+        borderRadius: 4,
+        borderRadiusApplication: "end",
+      },
+    },
+    dataLabels: { enabled: false },
+    xaxis: { categories: getBarCategories(cutoff, series) },
+    tooltip: {
+      marker: { show: false },
+      x: { show: false },
+      y: { formatter: (v: number) => `S/ ${v}` },
+    },
+  });
 
   function total(series: ChartSerie[], month: number) {
     return series.reduce((acc, s) => acc + s.data[month], 0);
@@ -22,31 +43,15 @@
     ];
   }
 
-  onMount(() => {
-    const series = getSeriesData(expenses, cutoff);
-    chartBar = new ApexCharts(document.querySelector("#chart-bar"), {
-      series,
-      chart: { type: "bar", height: 320, toolbar: { show: false } },
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: "60%",
-          borderRadius: 4,
-          borderRadiusApplication: "end",
-        },
-      },
-      dataLabels: { enabled: false },
-      stroke: { show: true, width: 8, colors: ["transparent"] },
-      xaxis: { categories: getBarCategories(cutoff, series) },
-      tooltip: {
-        marker: { show: false },
-        x: { show: false },
-        y: { formatter: (v: number) => `S/ ${v}` },
-      },
-    });
-    chartBar.render();
+  $effect(() => {
+    if (!apexChart) {
+      apexChart = new ApexCharts(divChart, chartConfig);
+      apexChart.render();
+    } else {
+      apexChart.updateOptions(chartConfig);
+    }
   });
 </script>
 
 <Divider>Last 3 months</Divider>
-<div id="chart-bar"></div>
+<div bind:this={divChart}></div>

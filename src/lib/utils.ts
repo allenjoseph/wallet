@@ -5,7 +5,7 @@ dayjs.extend(isBetween);
 import { Timestamp } from "firebase/firestore";
 import { wallet } from "./state.svelte";
 import {
-  FilterType,
+  ExpenseFilter,
   type ChartSerie,
   type Expense,
   type Filter,
@@ -40,17 +40,18 @@ export function filterExpenses(expenses: Expense[] = [], filter?: Filter) {
   }
 
   return expenses.filter((o) => {
-    if (filter.type === FilterType.Sources) {
-      return o.source.id === filter.id;
+    if (!o[filter.name]) {
+      return true; // select all
     }
-    if (filter.type === FilterType.Categories) {
-      return o.category.id === filter.id;
-    }
-    return true;
+    return o[filter.name].id === filter.id;
   });
 }
 
-export function getSeriesData(expenses: Expense[], cutoff: dayjs.Dayjs) {
+export function getSeriesData(
+  expenses: Expense[],
+  cutoff: dayjs.Dayjs,
+  filterBy: ExpenseFilter
+) {
   const range1 = cutoff.subtract(2, "M");
   const range2 = cutoff.subtract(1, "M");
   const range3 = cutoff;
@@ -59,14 +60,14 @@ export function getSeriesData(expenses: Expense[], cutoff: dayjs.Dayjs) {
   const series = expenses.reduce((acc, e) => {
     const date = dayjs(e.expenseDate);
     if (date.isBetween(range1, range2, "day", "[)")) {
-      addExpenseInSerie(acc, e, 0);
+      addExpenseInSerie(acc, e, 0, filterBy);
     } else if (date.isBetween(range2, range3, "day", "[)")) {
-      addExpenseInSerie(acc, e, 1);
+      addExpenseInSerie(acc, e, 1, filterBy);
     } else if (date.isBetween(range3, range4, "day", "[)")) {
-      addExpenseInSerie(acc, e, 2);
+      addExpenseInSerie(acc, e, 2, filterBy);
     }
     return acc;
-  }, initSeries(expenses));
+  }, initSeries(expenses, filterBy));
 
   return series;
 }
@@ -74,18 +75,19 @@ export function getSeriesData(expenses: Expense[], cutoff: dayjs.Dayjs) {
 function addExpenseInSerie(
   series: ChartSerie[],
   expense: Expense,
-  rangeIndex: number
+  rangeIndex: number,
+  filterBy: ExpenseFilter
 ) {
-  const serie = series.find((s) => s.name === expense.category.name);
+  const serie = series.find((s) => s.name === expense[filterBy].name);
   if (serie) {
     serie.data[rangeIndex] += Math.trunc(expense.amount);
   }
 }
 
-function initSeries(expenses: Expense[]) {
-  const categories = expenses.reduce(
-    (acc, e) => acc.add(e.category.name),
+function initSeries(expenses: Expense[], filterBy: ExpenseFilter) {
+  const series = expenses.reduce(
+    (acc, e) => acc.add(e[filterBy].name),
     new Set<string>()
   );
-  return [...categories].map<ChartSerie>((name) => ({ name, data: [0, 0, 0] }));
+  return [...series].map<ChartSerie>((name) => ({ name, data: [0, 0, 0] }));
 }

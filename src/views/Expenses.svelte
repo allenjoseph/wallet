@@ -5,7 +5,7 @@
   import { deleteExpense, getExpenses } from "../lib/backend";
   import { wallet } from "../lib/state.svelte";
   import {
-    FilterType,
+    ExpenseFilter,
     type BaseDoc,
     type Expense,
     type Filter,
@@ -37,9 +37,9 @@
     allExpenses = allExpenses?.filter((o) => o.id !== id);
   }
 
-  function onFilter(type: FilterType, item: BaseDoc) {
+  function onFilter(name: ExpenseFilter, item: BaseDoc) {
     fSelected =
-      !item.id || fSelected?.id === item.id ? undefined : { type, id: item.id };
+      !item.id || fSelected?.id === item.id ? undefined : { name, id: item.id };
   }
 
   $effect(() => {

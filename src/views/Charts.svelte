@@ -8,8 +8,11 @@
   import ChartDonut from "../components/chart/ChartDonut.svelte";
   import { CreditCard, ShoppingCart } from "lucide-svelte";
   import Badge from "../components/badge/Badge.svelte";
+  import { ExpenseFilter } from "../lib/types";
 
+  let groupBy = $state<ExpenseFilter>(ExpenseFilter.Category);
   let cutoff = $state(wallet.monthlyPeriodDay.clone());
+
   let from = $derived(cutoff.subtract(2, "M")); // two months ago
   let to = $derived(cutoff.add(1, "M")); // one month ahead
 </script>
@@ -19,11 +22,23 @@
     <ExpenseMonthlyPeriodDay bind:day={cutoff} />
   </Divider>
   <div class="flex items-start gap-2 flex-wrap">
-    <Badge Icon={ShoppingCart} selected>Category</Badge>
-    <Badge Icon={CreditCard} disabled>Source</Badge>
+    <Badge
+      Icon={ShoppingCart}
+      selected={groupBy === ExpenseFilter.Category}
+      onclick={() => (groupBy = ExpenseFilter.Category)}
+    >
+      Category
+    </Badge>
+    <Badge
+      Icon={CreditCard}
+      selected={groupBy === ExpenseFilter.Source}
+      onclick={() => (groupBy = ExpenseFilter.Source)}
+    >
+      Source
+    </Badge>
   </div>
   {#await getExpenses(from, to) then expensesLastThreeMonths}
-    <ChartDonut expenses={expensesLastThreeMonths} {cutoff} />
-    <ChartBar expenses={expensesLastThreeMonths} {cutoff} />
+    <ChartDonut expenses={expensesLastThreeMonths} {cutoff} {groupBy} />
+    <ChartBar expenses={expensesLastThreeMonths} {cutoff} {groupBy} />
   {/await}
 </View>
