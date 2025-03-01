@@ -91,3 +91,38 @@ function initSeries(expenses: Expense[], filterBy: ExpenseFilter) {
   );
   return [...series].map<ChartSerie>((name) => ({ name, data: [0, 0, 0] }));
 }
+
+export function getTotals(expenses: Expense[], cutoff: dayjs.Dayjs) {
+  const range1 = cutoff.subtract(2, "M");
+  const range2 = cutoff.subtract(1, "M");
+  const range3 = cutoff;
+  const range4 = cutoff.add(1, "M");
+
+  const totals = [
+    { date: range1.format("MMMM DD"), total: 0 },
+    { date: range2.format("MMMM DD"), total: 0 },
+    { date: range3.format("MMMM DD"), total: 0 },
+  ];
+
+  expenses.forEach((e) => {
+    const date = dayjs(e.expenseDate);
+    if (date.isBetween(range1, range2, "day", "[)")) {
+      totals[0].total += e.amount;
+    } else if (date.isBetween(range2, range3, "day", "[)")) {
+      totals[1].total += e.amount;
+    } else if (date.isBetween(range3, range4, "day", "[)")) {
+      totals[2].total += e.amount;
+    }
+  });
+
+  return totals;
+}
+
+export function formatCurrency(value: number, digits = 0) {
+  return value.toLocaleString("es-PE", {
+    style: "currency",
+    currency: "PEN",
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  });
+}

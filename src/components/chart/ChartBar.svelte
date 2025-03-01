@@ -54,4 +54,6 @@
 </script>
 
 <Divider>Last 3 months</Divider>
-<div bind:this={divChart}></div>
+<div class="card">
+  <div bind:this={divChart}></div>
+</div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ChevronsDown, ListFilter } from "lucide-svelte";
+  import { ChevronsDown, ChevronsUp, ListFilter } from "lucide-svelte";
   import { getCategories, getSources } from "../../lib/backend";
   import Badge from "../badge/Badge.svelte";
   import { ExpenseFilter } from "../../lib/types";
@@ -19,7 +19,7 @@
   }
 </script>
 
-<div class="relative w-full h-6 overflow-hidden">
+<div class="relative w-full h-[30px] overflow-hidden">
   <div
     class={["filters flex gap-2", active === ExpenseFilter.Source && "active"]}
   >
@@ -31,7 +31,6 @@
           onclick={() => onclick(ExpenseFilter.Source, item)}
           Icon={ListFilter}
           selected={item.id === selected}
-          small
         >
           {item.name}
         </Badge>
@@ -52,7 +51,6 @@
           onclick={() => onclick(ExpenseFilter.Category, item)}
           Icon={ListFilter}
           selected={item.id === selected}
-          small
         >
           {item.name}
         </Badge>
@@ -60,18 +58,22 @@
     {/await}
   </div>
   <button
-    class="absolute w-6 h-6 top-0 right-0 bg-gray-100 rounded-full flex items-center justify-center text-gray-600"
+    class="absolute w-[30px] h-[30px] top-0 right-0 bg-gray-100 rounded-full flex items-center justify-center text-gray-600"
     type="button"
     onclick={toggle}
   >
-    <ChevronsDown size={18} />
+    {#if active === ExpenseFilter.Source}
+      <ChevronsDown size={18} />
+    {:else}
+      <ChevronsUp size={18} />
+    {/if}
   </button>
 </div>
 
 {#snippet skeleton(length = 3)}
   <div class="animate-pulse flex gap-2">
     {#each Array.from({ length }, (_, i) => i + 1)}
-      <div class="w-16 h-6 bg-slate-200 rounded-full"></div>
+      <div class="w-16 h-[30px] bg-slate-200 rounded-full"></div>
     {/each}
   </div>
 {/snippet}

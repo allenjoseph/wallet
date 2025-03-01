@@ -12,9 +12,7 @@
   const { ondelete, onedit, ...expense }: Props = $props();
 </script>
 
-<div
-  class="relative border rounded-lg p-4 shadow-sm shadow-indigo-100 space-y-2"
->
+<div class="card space-y-2">
   <div class="flex justify-between items-center">
     <p class="text-xs text-gray-500">
       {dayjs(expense.expenseDate).format("ddd D MMM h:mm A")}
@@ -32,10 +30,10 @@
     </p>
   </div>
   <div class="flex items-center gap-2 text-xs">
-    <Badge Icon={ShoppingCart} small>
+    <Badge Icon={ShoppingCart} small secondary>
       {expense.category.name}
     </Badge>
-    <Badge Icon={CreditCard} small>
+    <Badge Icon={CreditCard} small secondary>
       {expense.source.name}
     </Badge>
   </div>

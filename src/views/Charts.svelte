@@ -1,4 +1,5 @@
 <script lang="ts">
+  import dayjs from "dayjs";
   import Divider from "../components/Divider.svelte";
   import View from "../components/View.svelte";
   import { wallet } from "../lib/state.svelte";
@@ -8,19 +9,34 @@
   import ChartDonut from "../components/chart/ChartDonut.svelte";
   import { CreditCard, ShoppingCart } from "lucide-svelte";
   import Badge from "../components/badge/Badge.svelte";
-  import { ExpenseFilter } from "../lib/types";
+  import { ExpenseFilter, type Expense } from "../lib/types";
+  import { formatCurrency, getTotals } from "../lib/utils";
 
   let groupBy = $state<ExpenseFilter>(ExpenseFilter.Category);
   let cutoff = $state(wallet.monthlyPeriodDay.clone());
 
-  let from = $derived(cutoff.subtract(2, "M")); // two months ago
-  let to = $derived(cutoff.add(1, "M")); // one month ahead
+  const from = $derived(cutoff.subtract(2, "M")); // two months ago
+  const to = $derived(cutoff.add(1, "M")); // one month ahead
+
+  const expenses$ = $derived(getExpenses(from, to));
 </script>
 
 <View>
   <Divider>
     <ExpenseMonthlyPeriodDay bind:day={cutoff} />
   </Divider>
+  {#await expenses$ then expenses}
+    <div class="flex gap-4">
+      {#each getTotals(expenses, cutoff) as item}
+        <div class="card flex-1">
+          <small class="text-gray-500 uppercase">{item.date}</small>
+          <p class="text-2xl text-gray-700 font-semibold">
+            {formatCurrency(item.total)}
+          </p>
+        </div>
+      {/each}
+    </div>
+  {/await}
   <div class="flex items-start gap-2 flex-wrap">
     <Badge
       Icon={ShoppingCart}
@@ -37,7 +53,7 @@
       Source
     </Badge>
   </div>
-  {#await getExpenses(from, to) then expensesLastThreeMonths}
+  {#await expenses$ then expensesLastThreeMonths}
     <ChartDonut expenses={expensesLastThreeMonths} {cutoff} {groupBy} />
     <ChartBar expenses={expensesLastThreeMonths} {cutoff} {groupBy} />
   {/await}

@@ -29,7 +29,12 @@
 </script>
 
 <div class="relative">
-  <Badge onclick={() => (isOpen = !isOpen)} {Icon} {small}>
+  <Badge
+    onclick={() => (isOpen = !isOpen)}
+    {Icon}
+    {small}
+    outline={!selectedItem || isOpen}
+  >
     {selectedItem?.name ?? placeholder}
   </Badge>
 

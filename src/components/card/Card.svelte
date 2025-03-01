@@ -11,7 +11,7 @@
   const { onedit, ondelete, ...item }: Props = $props();
 </script>
 
-<div class="relative border rounded-lg p-4 shadow-sm shadow-indigo-100">
+<div class="card">
   <p class="text-xs text-gray-500">
     {dayjs(item.datetime).format("ddd D MMM h:mm A")}
   </p>
