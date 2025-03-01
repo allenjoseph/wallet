@@ -26,10 +26,12 @@
     <ExpenseMonthlyPeriodDay bind:day={cutoff} />
   </Divider>
   {#await expenses$ then expenses}
-    <div class="flex gap-4">
+    <div class="whitespace-nowrap space-x-4 mx-auto">
       {#each getTotals(expenses, cutoff) as item}
-        <div class="card flex-1">
-          <small class="text-gray-500 uppercase">{item.date}</small>
+        <div class="card inline-block w-36">
+          <small class="text-gray-500 uppercase text-nowrap">
+            {item.date}
+          </small>
           <p class="text-2xl text-gray-700 font-semibold">
             {formatCurrency(item.total)}
           </p>

@@ -93,15 +93,13 @@ function initSeries(expenses: Expense[], filterBy: ExpenseFilter) {
 }
 
 export function getTotals(expenses: Expense[], cutoff: dayjs.Dayjs) {
-  const range1 = cutoff.subtract(2, "M");
-  const range2 = cutoff.subtract(1, "M");
-  const range3 = cutoff;
-  const range4 = cutoff.add(1, "M");
+  const range1 = cutoff.subtract(1, "M");
+  const range2 = cutoff;
+  const range3 = cutoff.add(1, "M");
 
   const totals = [
     { date: range1.format("MMMM DD"), total: 0 },
     { date: range2.format("MMMM DD"), total: 0 },
-    { date: range3.format("MMMM DD"), total: 0 },
   ];
 
   expenses.forEach((e) => {
@@ -110,8 +108,6 @@ export function getTotals(expenses: Expense[], cutoff: dayjs.Dayjs) {
       totals[0].total += e.amount;
     } else if (date.isBetween(range2, range3, "day", "[)")) {
       totals[1].total += e.amount;
-    } else if (date.isBetween(range3, range4, "day", "[)")) {
-      totals[2].total += e.amount;
     }
   });
 
