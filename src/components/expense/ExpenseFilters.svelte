@@ -21,7 +21,10 @@
 
 <div class="relative w-full h-[30px] overflow-hidden">
   <div
-    class={["filters flex gap-2", active === ExpenseFilter.Source && "active"]}
+    class={[
+      "filters flex gap-2 pr-8 w-full overflow-x-auto",
+      active === ExpenseFilter.Source && "active",
+    ]}
   >
     {#await sources$}
       {@render skeleton()}
@@ -39,7 +42,7 @@
   </div>
   <div
     class={[
-      "filters flex gap-2",
+      "filters flex gap-2 pr-8 w-full overflow-x-auto",
       active === ExpenseFilter.Category && "active",
     ]}
   >
