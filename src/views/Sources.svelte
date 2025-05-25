@@ -8,7 +8,9 @@
   import type { BaseDoc } from "../lib/types";
   import { loaderDecorator } from "../lib/utils";
   import MainCard from "../components/card/MainCard.svelte";
+  import ChevronButton from "../components/chevron/ChevronButton.svelte";
 
+  let showForm = $state(false);
   let source = $state<BaseDoc>({ name: "", description: "" });
   let sources$ = $state(getSources());
 
@@ -32,15 +34,18 @@
 
 <View>
   <Divider>Add / Edit</Divider>
-  <MainCard>
-    <Input name="name" bind:value={source.name} />
-    <Input name="description" bind:value={source.description} />
-    <footer class="self-end">
-      <Button onClick={loaderDecorator(onSave)} disabled={isInvalid}>
-        Save
-      </Button>
-    </footer>
-  </MainCard>
+  {#if showForm}
+    <MainCard>
+      <Input name="name" bind:value={source.name} />
+      <Input name="description" bind:value={source.description} />
+      <footer class="self-end">
+        <Button onClick={loaderDecorator(onSave)} disabled={isInvalid}>
+          Save
+        </Button>
+      </footer>
+    </MainCard>
+  {/if}
+  <ChevronButton open={showForm} toggle={() => (showForm = !showForm)} />
 
   <Divider>All sources</Divider>
   {#await sources$}

@@ -9,7 +9,7 @@
   import ChartDonut from "../components/chart/ChartDonut.svelte";
   import { CreditCard, ShoppingCart } from "lucide-svelte";
   import Badge from "../components/badge/Badge.svelte";
-  import { ExpenseFilter, type Expense } from "../lib/types";
+  import { ExpenseFilter } from "../lib/types";
   import { formatCurrency, getTotals } from "../lib/utils";
 
   let groupBy = $state<ExpenseFilter>(ExpenseFilter.Category);

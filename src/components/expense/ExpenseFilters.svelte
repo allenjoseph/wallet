@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { ChevronsDown, ChevronsUp, ListFilter } from "lucide-svelte";
+  import { ListFilter } from "lucide-svelte";
   import { getCategories, getSources } from "../../lib/backend";
   import Badge from "../badge/Badge.svelte";
   import { ExpenseFilter } from "../../lib/types";
+  import ChevronButton from "../chevron/ChevronButton.svelte";
 
   let { onclick, selected } = $props();
 
@@ -60,17 +61,7 @@
       {/each}
     {/await}
   </div>
-  <button
-    class="absolute w-[30px] h-[30px] top-0 right-0 bg-gray-100 rounded-full flex items-center justify-center text-gray-600"
-    type="button"
-    onclick={toggle}
-  >
-    {#if active === ExpenseFilter.Source}
-      <ChevronsDown size={18} />
-    {:else}
-      <ChevronsUp size={18} />
-    {/if}
-  </button>
+  <ChevronButton open={active !== ExpenseFilter.Source} {toggle} right />
 </div>
 
 {#snippet skeleton(length = 3)}
