@@ -1,17 +1,17 @@
 import { collection, CollectionReference } from "firebase/firestore";
-import { BaseRepository } from "./BaseRepository";
+import { BaseRepo } from "./BaseRepo";
 import { db } from "./db";
 import type { Doc } from "../entities";
 
-class SourceRepository extends BaseRepository<Doc> {
+class SourceRepo extends BaseRepo<Doc> {
   constructor(ref: CollectionReference) {
     super(ref);
   }
 
-  query() {
+  getAll() {
     return this.queryDocs();
   }
 }
 
 const ref = collection(db, "sources");
-export const sourceRepository = new SourceRepository(ref);
+export const sourceRepo = new SourceRepo(ref);

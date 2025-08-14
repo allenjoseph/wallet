@@ -1,22 +1,22 @@
 <script lang="ts">
   import { ListFilter } from "lucide-svelte";
-  import { getCategories, getSources } from "../../lib/backend";
   import Badge from "../badge/Badge.svelte";
-  import { ExpenseFilter } from "../../lib/types";
   import ChevronButton from "../chevron/ChevronButton.svelte";
+  import { categoryRepo, sourceRepo } from "../../repositories";
+  import { ExpenseGroup } from "../../entities";
 
   let { onclick, selected } = $props();
 
-  let active = $state<ExpenseFilter>(ExpenseFilter.Source);
+  let active = $state<ExpenseGroup>(ExpenseGroup.Source);
 
-  let sources$ = $state(getSources());
-  let categories$ = $state(getCategories());
+  let sources$ = $state(sourceRepo.getAll());
+  let categories$ = $state(categoryRepo.getAll());
 
   function toggle() {
     active =
-      active === ExpenseFilter.Source
-        ? ExpenseFilter.Category
-        : ExpenseFilter.Source;
+      active === ExpenseGroup.Source
+        ? ExpenseGroup.Category
+        : ExpenseGroup.Source;
   }
 </script>
 
@@ -24,7 +24,7 @@
   <div
     class={[
       "filters flex gap-2 pr-8 w-full overflow-x-auto",
-      active === ExpenseFilter.Source && "active",
+      active === ExpenseGroup.Source && "active",
     ]}
   >
     {#await sources$}
@@ -32,7 +32,7 @@
     {:then sources}
       {#each sources as item}
         <Badge
-          onclick={() => onclick(ExpenseFilter.Source, item)}
+          onclick={() => onclick(ExpenseGroup.Source, item)}
           Icon={ListFilter}
           selected={item.id === selected}
         >
@@ -44,7 +44,7 @@
   <div
     class={[
       "filters flex gap-2 pr-8 w-full overflow-x-auto",
-      active === ExpenseFilter.Category && "active",
+      active === ExpenseGroup.Category && "active",
     ]}
   >
     {#await categories$}
@@ -52,7 +52,7 @@
     {:then categories}
       {#each categories as item}
         <Badge
-          onclick={() => onclick(ExpenseFilter.Category, item)}
+          onclick={() => onclick(ExpenseGroup.Category, item)}
           Icon={ListFilter}
           selected={item.id === selected}
         >
@@ -61,7 +61,7 @@
       {/each}
     {/await}
   </div>
-  <ChevronButton open={active !== ExpenseFilter.Source} {toggle} right />
+  <ChevronButton open={active !== ExpenseGroup.Source} {toggle} right />
 </div>
 
 {#snippet skeleton(length = 3)}

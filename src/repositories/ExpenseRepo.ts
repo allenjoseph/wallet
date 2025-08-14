@@ -6,10 +6,10 @@ import {
   where,
 } from "firebase/firestore";
 import type { Expense } from "../entities";
-import { BaseRepository } from "./BaseRepository";
+import { BaseRepo } from "./BaseRepo";
 import { db } from "./db";
 
-class ExpenseRepository extends BaseRepository<Expense> {
+class ExpenseRepo extends BaseRepo<Expense> {
   constructor(ref: CollectionReference) {
     super(ref);
   }
@@ -30,4 +30,4 @@ class ExpenseRepository extends BaseRepository<Expense> {
 }
 
 const ref = collection(db, "expenses");
-export const expenseRepository = new ExpenseRepository(ref);
+export const expenseRepo = new ExpenseRepo(ref);

@@ -1,24 +1,23 @@
 <script lang="ts">
-  import dayjs from "dayjs";
   import Divider from "../components/Divider.svelte";
   import View from "../components/View.svelte";
   import { wallet } from "../lib/state.svelte";
   import ExpenseMonthlyPeriodDay from "../components/expense/ExpenseMonthlyPeriodDay.svelte";
-  import { getExpenses } from "../lib/backend";
   import ChartBar from "../components/chart/ChartBar.svelte";
   import ChartDonut from "../components/chart/ChartDonut.svelte";
   import { CreditCard, ShoppingCart } from "lucide-svelte";
   import Badge from "../components/badge/Badge.svelte";
-  import { ExpenseFilter } from "../lib/types";
   import { formatCurrency, getTotals } from "../lib/utils";
+  import { expenseRepo } from "../repositories";
+  import { ExpenseGroup } from "../entities";
 
-  let groupBy = $state<ExpenseFilter>(ExpenseFilter.Category);
+  let groupBy = $state<ExpenseGroup>(ExpenseGroup.Category);
   let cutoff = $state(wallet.monthlyPeriodDay.clone());
 
   const from = $derived(cutoff.subtract(2, "M")); // two months ago
   const to = $derived(cutoff.add(1, "M")); // one month ahead
 
-  const expenses$ = $derived(getExpenses(from, to));
+  const expenses$ = $derived(expenseRepo.query(from, to));
 </script>
 
 <View>
@@ -42,15 +41,15 @@
   <div class="flex items-start gap-2 flex-wrap">
     <Badge
       Icon={ShoppingCart}
-      selected={groupBy === ExpenseFilter.Category}
-      onclick={() => (groupBy = ExpenseFilter.Category)}
+      selected={groupBy === ExpenseGroup.Category}
+      onclick={() => (groupBy = ExpenseGroup.Category)}
     >
       Category
     </Badge>
     <Badge
       Icon={CreditCard}
-      selected={groupBy === ExpenseFilter.Source}
-      onclick={() => (groupBy = ExpenseFilter.Source)}
+      selected={groupBy === ExpenseGroup.Source}
+      onclick={() => (groupBy = ExpenseGroup.Source)}
     >
       Source
     </Badge>

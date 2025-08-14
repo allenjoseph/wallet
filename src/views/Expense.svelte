@@ -2,23 +2,23 @@
   import dayjs from "dayjs";
   import ExpenseAmount from "../components/expense/ExpenseAmount.svelte";
   import DropdownBadge from "../components/badge/DropdownBadge.svelte";
-  import { saveExpense, getCategories, getSources } from "../lib/backend";
   import Button from "../components/Button.svelte";
   import View from "../components/View.svelte";
   import Input from "../components/Input.svelte";
-  import type { Expense } from "../lib/types";
   import { wallet } from "../lib/state.svelte";
   import { CreditCard, ShoppingCart } from "lucide-svelte";
-  import { loaderDecorator, toTimestamp } from "../lib/utils";
+  import { loaderDecorator } from "../lib/utils";
   import Divider from "../components/Divider.svelte";
   import MainCard from "../components/card/MainCard.svelte";
   import { routes } from "../lib/routes";
+  import { categoryRepo, expenseRepo, sourceRepo } from "../repositories";
+  import type { Expense } from "../entities";
 
   let expenseDate: string = $state(
     dayjs(wallet.selectedExpense?.expenseDate).format("YYYY-MM-DDTHH:mm")
   );
-  const categories$ = getCategories();
-  const sources$ = getSources();
+  const categories$ = categoryRepo.getAll();
+  const sources$ = sourceRepo.getAll();
 
   let expense = $state<Expense>(
     wallet.selectedExpense ?? {
@@ -36,10 +36,7 @@
   );
 
   async function onSave() {
-    await saveExpense({
-      ...expense,
-      expenseDate: toTimestamp(dayjs(expenseDate).toDate()),
-    });
+    await expenseRepo.save(expense);
     wallet.selectedRoute = routes.expenses;
   }
 </script>

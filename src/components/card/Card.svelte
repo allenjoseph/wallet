@@ -1,9 +1,9 @@
 <script lang="ts">
   import dayjs from "dayjs";
   import { Pencil, Trash2 } from "lucide-svelte";
-  import type { BaseDoc } from "../../lib/types";
+  import type { Doc } from "../../entities";
 
-  interface Props extends BaseDoc {
+  interface Props extends Doc {
     onedit: () => void;
     ondelete: () => void;
   }

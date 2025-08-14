@@ -2,14 +2,8 @@
   import Divider from "../components/Divider.svelte";
   import ExpenseCard from "../components/card/ExpenseCard.svelte";
   import View from "../components/View.svelte";
-  import { deleteExpense, getExpenses } from "../lib/backend";
   import { wallet } from "../lib/state.svelte";
-  import {
-    ExpenseFilter,
-    type BaseDoc,
-    type Expense,
-    type Filter,
-  } from "../lib/types";
+  import { type Filter } from "../lib/types";
   import ExpenseAmount from "../components/expense/ExpenseAmount.svelte";
   import {
     sumMonthPeriod,
@@ -20,6 +14,8 @@
   import MainCard from "../components/card/MainCard.svelte";
   import { routes } from "../lib/routes";
   import ExpenseMonthlyPeriodDay from "../components/expense/ExpenseMonthlyPeriodDay.svelte";
+  import { expenseRepo } from "../repositories";
+  import type { Doc, Expense, ExpenseGroup } from "../entities";
 
   let allExpenses = $state<Expense[]>();
   let fSelected = $state<Filter>();
@@ -33,18 +29,20 @@
   }
 
   async function onDelete(id: string) {
-    await deleteExpense(id);
+    await expenseRepo.delete(id);
     allExpenses = allExpenses?.filter((o) => o.id !== id);
   }
 
-  function onFilter(name: ExpenseFilter, item: BaseDoc) {
+  function onFilter(name: ExpenseGroup, item: Doc) {
     fSelected =
       !item.id || fSelected?.id === item.id ? undefined : { name, id: item.id };
   }
 
   $effect(() => {
     if (wallet.monthlyPeriodDay) {
-      getExpenses(wallet.monthlyPeriodDay).then((data) => (allExpenses = data));
+      expenseRepo
+        .query(wallet.monthlyPeriodDay)
+        .then((data) => (allExpenses = data));
     }
   });
 </script>

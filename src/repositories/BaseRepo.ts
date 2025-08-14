@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 import type { Doc } from "../entities";
 
-export class BaseRepository<T extends Doc> {
+export abstract class BaseRepo<T extends Doc> {
   constructor(private ref: CollectionReference) {}
 
   protected async queryDocs(
@@ -28,11 +28,12 @@ export class BaseRepository<T extends Doc> {
 
     const snapshot = await getDocs(query(this.ref, ...constraints));
 
-    return snapshot.docs.map((item) => this.formatDates(item));
+    return snapshot.docs.map((item) => this.formatTimestamps(item));
   }
 
   async save(item: T) {
-    return item.id ? this.updateItem(item) : this.addItem(item);
+    const data = this.formatDates({ ...item });
+    return data.id ? this.updateItem(data) : this.addItem(data);
   }
 
   async delete(id: string) {
@@ -62,7 +63,7 @@ export class BaseRepository<T extends Doc> {
     return uid;
   }
 
-  private formatDates(item: any) {
+  private formatTimestamps(item: any) {
     const data = item.data();
     if (data.datetime) {
       data.datetime = (data.datetime as Timestamp).toDate();
@@ -71,5 +72,15 @@ export class BaseRepository<T extends Doc> {
       data.expenseDate = (data.expenseDate as Timestamp).toDate();
     }
     return { id: item.id, ...data } as T;
+  }
+
+  private formatDates(item: any) {
+    if (item.datetime) {
+      item.datetime = Timestamp.fromDate(item.datetime);
+    }
+    if (item.expenseDate) {
+      item.expenseDate = Timestamp.fromDate(item.expenseDate);
+    }
+    return item;
   }
 }

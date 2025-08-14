@@ -1,11 +1,11 @@
 <script lang="ts">
+  import type { Doc } from "../../entities";
   import Badge from "./Badge.svelte";
-  import type { BaseDoc } from "../../lib/types";
 
   interface Props {
     Icon: any;
-    value?: BaseDoc;
-    data$: Promise<BaseDoc[]>;
+    value?: Doc;
+    data$: Promise<Doc[]>;
     placeholder?: string;
     small?: boolean;
   }
@@ -19,9 +19,9 @@
   }: Props = $props();
 
   let isOpen = $state(false);
-  let selectedItem = $state<BaseDoc>(value);
+  let selectedItem = $state<Doc>(value);
 
-  function onSelect(category: BaseDoc) {
+  function onSelect(category: Doc) {
     value = category;
     selectedItem = category;
     isOpen = false;

@@ -1,8 +1,8 @@
 <script lang="ts">
   import dayjs from "dayjs";
   import { CreditCard, ArrowRight, ShoppingCart, Trash2 } from "lucide-svelte";
-  import type { Expense } from "../../lib/types";
   import Badge from "../badge/Badge.svelte";
+  import type { Expense } from "../../entities";
 
   interface Props extends Expense {
     ondelete: () => void;

@@ -2,7 +2,7 @@ import { doc, setDoc } from "firebase/firestore";
 import type { User } from "../entities";
 import { db } from "./db";
 
-class UserRepository {
+class UserRepo {
   save(user: User) {
     return setDoc(doc(db, "users", user.uid), {
       email: user.email,
@@ -12,4 +12,4 @@ class UserRepository {
   }
 }
 
-export const userRepository = new UserRepository();
+export const userRepo = new UserRepo();

@@ -2,14 +2,9 @@ import dayjs, { Dayjs } from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
 
-import { Timestamp } from "firebase/firestore";
 import { wallet } from "./state.svelte";
-import {
-  ExpenseFilter,
-  type ChartSerie,
-  type Expense,
-  type Filter,
-} from "./types";
+import { type ChartSerie, type Filter } from "./types";
+import type { Expense, ExpenseGroup } from "../entities";
 
 export function loaderDecorator(cb: () => Promise<any>) {
   return async () => {
@@ -17,10 +12,6 @@ export function loaderDecorator(cb: () => Promise<any>) {
     await cb();
     wallet.isLoading = false;
   };
-}
-
-export function toTimestamp(date: Date) {
-  return Timestamp.fromDate(date);
 }
 
 export function sumMonthPeriod(expenses: Expense[] = [], monthDay: Dayjs) {
@@ -50,7 +41,7 @@ export function filterExpenses(expenses: Expense[] = [], filter?: Filter) {
 export function getSeriesData(
   expenses: Expense[],
   cutoff: dayjs.Dayjs,
-  filterBy: ExpenseFilter
+  filterBy: ExpenseGroup
 ) {
   const range1 = cutoff.subtract(2, "M");
   const range2 = cutoff.subtract(1, "M");
@@ -76,7 +67,7 @@ function addExpenseInSerie(
   series: ChartSerie[],
   expense: Expense,
   rangeIndex: number,
-  filterBy: ExpenseFilter
+  filterBy: ExpenseGroup
 ) {
   const serie = series.find((s) => s.name === expense[filterBy].name);
   if (serie) {
@@ -84,7 +75,7 @@ function addExpenseInSerie(
   }
 }
 
-function initSeries(expenses: Expense[], filterBy: ExpenseFilter) {
+function initSeries(expenses: Expense[], filterBy: ExpenseGroup) {
   const series = expenses.reduce(
     (acc, e) => acc.add(e[filterBy].name),
     new Set<string>()
@@ -105,9 +96,9 @@ export function getTotals(expenses: Expense[], cutoff: dayjs.Dayjs) {
   expenses.forEach((e) => {
     const date = dayjs(e.expenseDate);
     if (date.isBetween(range1, range2, "day", "[)")) {
-      totals[0].total += e.amount;
+      totals[0].total += Math.trunc(e.amount);
     } else if (date.isBetween(range2, range3, "day", "[)")) {
-      totals[1].total += e.amount;
+      totals[1].total += Math.trunc(e.amount);
     }
   });
 

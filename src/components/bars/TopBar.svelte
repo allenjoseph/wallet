@@ -1,7 +1,7 @@
 <script lang="ts">
   import { EllipsisVertical } from "lucide-svelte";
-  import { logOut } from "../../lib/backend";
   import { wallet } from "../../lib/state.svelte";
+  import { authService } from "../../services";
 
   let hasImage = $state(true);
   let isSettingsOpen = $state(false);
@@ -11,7 +11,7 @@
   }
 
   function signOut() {
-    logOut().then(() => (wallet.user = null as never));
+    authService.logOut().then(() => (wallet.user = null as never));
   }
 </script>
 

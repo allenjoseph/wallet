@@ -2,33 +2,33 @@
   import Button from "../components/Button.svelte";
   import Input from "../components/Input.svelte";
   import View from "../components/View.svelte";
-  import { deleteCategory, getCategories, saveCategory } from "../lib/backend";
   import Divider from "../components/Divider.svelte";
   import Card from "../components/card/Card.svelte";
-  import type { BaseDoc } from "../lib/types";
   import { loaderDecorator } from "../lib/utils";
   import MainCard from "../components/card/MainCard.svelte";
   import ChevronButton from "../components/chevron/ChevronButton.svelte";
+  import { categoryRepo } from "../repositories";
+  import type { Doc } from "../entities";
 
   let showForm = $state(false);
-  let category = $state<BaseDoc>({ name: "", description: "" });
-  let categories$ = $state(getCategories());
+  let category = $state<Doc>({ name: "", description: "" });
+  let categories$ = $state(categoryRepo.getAll());
 
   let isInvalid = $derived(!category.name || !category.description);
 
   async function onSave() {
-    await saveCategory({ ...category });
+    await categoryRepo.save({ ...category });
     category = { name: "", description: "" };
-    categories$ = getCategories();
+    categories$ = categoryRepo.getAll();
   }
 
-  async function onEdit(item: BaseDoc) {
+  async function onEdit(item: Doc) {
     category = { ...item };
   }
 
   async function onDelete(id: string) {
-    await deleteCategory(id);
-    categories$ = getCategories();
+    await categoryRepo.delete(id);
+    categories$ = categoryRepo.getAll();
   }
 </script>
 
