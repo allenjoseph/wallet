@@ -3,8 +3,8 @@ import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
 
 import { wallet } from "./state.svelte";
-import { type ChartSerie, type Filter } from "./types";
-import type { Expense, ExpenseGroup } from "../entities";
+import { type Filter } from "./types";
+import type { Expense } from "../entities";
 
 export function loaderDecorator(cb: () => Promise<any>) {
   return async () => {
@@ -36,51 +36,6 @@ export function filterExpenses(expenses: Expense[] = [], filter?: Filter) {
     }
     return o[filter.name].id === filter.id;
   });
-}
-
-export function getSeriesData(
-  expenses: Expense[],
-  cutoff: dayjs.Dayjs,
-  filterBy: ExpenseGroup
-) {
-  const range1 = cutoff.subtract(2, "M");
-  const range2 = cutoff.subtract(1, "M");
-  const range3 = cutoff;
-  const range4 = cutoff.add(1, "M");
-
-  const series = expenses.reduce((acc, e) => {
-    const date = dayjs(e.expenseDate);
-    if (date.isBetween(range1, range2, "day", "[)")) {
-      addExpenseInSerie(acc, e, 0, filterBy);
-    } else if (date.isBetween(range2, range3, "day", "[)")) {
-      addExpenseInSerie(acc, e, 1, filterBy);
-    } else if (date.isBetween(range3, range4, "day", "[)")) {
-      addExpenseInSerie(acc, e, 2, filterBy);
-    }
-    return acc;
-  }, initSeries(expenses, filterBy));
-
-  return series;
-}
-
-function addExpenseInSerie(
-  series: ChartSerie[],
-  expense: Expense,
-  rangeIndex: number,
-  filterBy: ExpenseGroup
-) {
-  const serie = series.find((s) => s.name === expense[filterBy].name);
-  if (serie) {
-    serie.data[rangeIndex] += Math.trunc(expense.amount);
-  }
-}
-
-function initSeries(expenses: Expense[], filterBy: ExpenseGroup) {
-  const series = expenses.reduce(
-    (acc, e) => acc.add(e[filterBy].name),
-    new Set<string>()
-  );
-  return [...series].map<ChartSerie>((name) => ({ name, data: [0, 0, 0] }));
 }
 
 export function getTotals(expenses: Expense[], cutoff: dayjs.Dayjs) {

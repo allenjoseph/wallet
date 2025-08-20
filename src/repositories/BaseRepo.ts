@@ -28,11 +28,11 @@ export abstract class BaseRepo<T extends Doc> {
 
     const snapshot = await getDocs(query(this.ref, ...constraints));
 
-    return snapshot.docs.map((item) => this.formatTimestamps(item));
+    return snapshot.docs.map((item) => this.mapTimestampsToDate(item));
   }
 
   async save(item: T) {
-    const data = this.formatDates({ ...item });
+    const data = this.mapDatesToTimestamp({ ...item });
     return data.id ? this.updateItem(data) : this.addItem(data);
   }
 
@@ -63,7 +63,7 @@ export abstract class BaseRepo<T extends Doc> {
     return uid;
   }
 
-  private formatTimestamps(item: any) {
+  private mapTimestampsToDate(item: any) {
     const data = item.data();
     if (data.datetime) {
       data.datetime = (data.datetime as Timestamp).toDate();
@@ -74,7 +74,7 @@ export abstract class BaseRepo<T extends Doc> {
     return { id: item.id, ...data } as T;
   }
 
-  private formatDates(item: any) {
+  private mapDatesToTimestamp(item: any) {
     if (item.datetime) {
       item.datetime = Timestamp.fromDate(item.datetime);
     }

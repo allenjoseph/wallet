@@ -9,9 +9,9 @@
   import Badge from "../components/badge/Badge.svelte";
   import { formatCurrency, getTotals } from "../lib/utils";
   import { expenseRepo } from "../repositories";
-  import { ExpenseGroup } from "../entities";
+  import { TagGroup } from "../entities";
 
-  let groupBy = $state<ExpenseGroup>(ExpenseGroup.Category);
+  let groupBy = $state<TagGroup>(TagGroup.Category);
   let cutoff = $state(wallet.monthlyPeriodDay.clone());
 
   const from = $derived(cutoff.subtract(2, "M")); // two months ago
@@ -41,15 +41,15 @@
   <div class="flex items-start gap-2 flex-wrap">
     <Badge
       Icon={ShoppingCart}
-      selected={groupBy === ExpenseGroup.Category}
-      onclick={() => (groupBy = ExpenseGroup.Category)}
+      selected={groupBy === TagGroup.Category}
+      onclick={() => (groupBy = TagGroup.Category)}
     >
       Category
     </Badge>
     <Badge
       Icon={CreditCard}
-      selected={groupBy === ExpenseGroup.Source}
-      onclick={() => (groupBy = ExpenseGroup.Source)}
+      selected={groupBy === TagGroup.Source}
+      onclick={() => (groupBy = TagGroup.Source)}
     >
       Source
     </Badge>

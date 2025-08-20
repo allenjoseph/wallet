@@ -3,11 +3,13 @@ import type { Doc } from "./Doc";
 export interface Expense extends Doc {
   amount: number;
   expenseDate: Date;
-  [ExpenseGroup.Category]: Doc;
-  [ExpenseGroup.Source]: Doc;
+  [TagGroup.Category]: Doc;
+  [TagGroup.Source]: Doc;
 }
 
-export enum ExpenseGroup {
+export type Tag = string;
+
+export enum TagGroup {
   Category = "category",
   Source = "source",
 }

@@ -2,17 +2,18 @@
   import ApexCharts from "apexcharts";
   import type { Dayjs } from "dayjs";
   import type { ChartSerie } from "../../lib/types";
-  import { getSeriesData } from "../../lib/utils";
   import Divider from "../Divider.svelte";
+  import { ExpenseChartService } from "../../services";
 
   let { expenses, cutoff, groupBy } = $props();
 
   let divChart: HTMLDivElement;
   let apexChart = $state<ApexCharts>();
 
-  const series = $derived(getSeriesData(expenses, cutoff, groupBy));
+  const chart = $derived(new ExpenseChartService(expenses, groupBy, cutoff));
+  const chartSeries = $derived(chart.series);
   const chartConfig = $derived({
-    series,
+    series: chartSeries,
     chart: { type: "bar", height: 320, toolbar: { show: false } },
     plotOptions: {
       bar: {
@@ -23,7 +24,7 @@
       },
     },
     dataLabels: { enabled: false },
-    xaxis: { categories: getBarCategories(cutoff, series) },
+    xaxis: { categories: getBarCategories(cutoff, chartSeries) },
     tooltip: {
       marker: { show: false },
       x: { show: false },

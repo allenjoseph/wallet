@@ -3,20 +3,17 @@
   import Badge from "../badge/Badge.svelte";
   import ChevronButton from "../chevron/ChevronButton.svelte";
   import { categoryRepo, sourceRepo } from "../../repositories";
-  import { ExpenseGroup } from "../../entities";
+  import { TagGroup } from "../../entities";
 
   let { onclick, selected } = $props();
 
-  let active = $state<ExpenseGroup>(ExpenseGroup.Source);
+  let active = $state<TagGroup>(TagGroup.Source);
 
   let sources$ = $state(sourceRepo.getAll());
   let categories$ = $state(categoryRepo.getAll());
 
   function toggle() {
-    active =
-      active === ExpenseGroup.Source
-        ? ExpenseGroup.Category
-        : ExpenseGroup.Source;
+    active = active === TagGroup.Source ? TagGroup.Category : TagGroup.Source;
   }
 </script>
 
@@ -24,7 +21,7 @@
   <div
     class={[
       "filters flex gap-2 pr-8 w-full overflow-x-auto",
-      active === ExpenseGroup.Source && "active",
+      active === TagGroup.Source && "active",
     ]}
   >
     {#await sources$}
@@ -32,7 +29,7 @@
     {:then sources}
       {#each sources as item}
         <Badge
-          onclick={() => onclick(ExpenseGroup.Source, item)}
+          onclick={() => onclick(TagGroup.Source, item)}
           Icon={ListFilter}
           selected={item.id === selected}
         >
@@ -44,7 +41,7 @@
   <div
     class={[
       "filters flex gap-2 pr-8 w-full overflow-x-auto",
-      active === ExpenseGroup.Category && "active",
+      active === TagGroup.Category && "active",
     ]}
   >
     {#await categories$}
@@ -52,7 +49,7 @@
     {:then categories}
       {#each categories as item}
         <Badge
-          onclick={() => onclick(ExpenseGroup.Category, item)}
+          onclick={() => onclick(TagGroup.Category, item)}
           Icon={ListFilter}
           selected={item.id === selected}
         >
@@ -61,7 +58,7 @@
       {/each}
     {/await}
   </div>
-  <ChevronButton open={active !== ExpenseGroup.Source} {toggle} right />
+  <ChevronButton open={active !== TagGroup.Source} {toggle} right />
 </div>
 
 {#snippet skeleton(length = 3)}

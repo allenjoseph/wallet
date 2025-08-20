@@ -1,4 +1,4 @@
-import type { ExpenseGroup } from "../entities";
+import type { TagGroup } from "../entities";
 
 export interface Route {
   title: string;
@@ -8,7 +8,7 @@ export interface Route {
 }
 
 export interface Filter {
-  name: ExpenseGroup;
+  name: TagGroup;
   id: string;
 }
 

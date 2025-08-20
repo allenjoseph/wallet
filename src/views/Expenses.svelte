@@ -15,7 +15,7 @@
   import { routes } from "../lib/routes";
   import ExpenseMonthlyPeriodDay from "../components/expense/ExpenseMonthlyPeriodDay.svelte";
   import { expenseRepo } from "../repositories";
-  import type { Doc, Expense, ExpenseGroup } from "../entities";
+  import type { Doc, Expense, TagGroup } from "../entities";
 
   let allExpenses = $state<Expense[]>();
   let fSelected = $state<Filter>();
@@ -33,7 +33,7 @@
     allExpenses = allExpenses?.filter((o) => o.id !== id);
   }
 
-  function onFilter(name: ExpenseGroup, item: Doc) {
+  function onFilter(name: TagGroup, item: Doc) {
     fSelected =
       !item.id || fSelected?.id === item.id ? undefined : { name, id: item.id };
   }

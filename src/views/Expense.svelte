@@ -36,7 +36,10 @@
   );
 
   async function onSave() {
-    await expenseRepo.save(expense);
+    await expenseRepo.save({
+      ...expense,
+      expenseDate: dayjs(expenseDate).toDate(),
+    });
     wallet.selectedRoute = routes.expenses;
   }
 </script>

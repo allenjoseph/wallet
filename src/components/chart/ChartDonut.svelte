@@ -1,18 +1,19 @@
 <script lang="ts">
   import ApexCharts from "apexcharts";
-  import { getSeriesData } from "../../lib/utils";
   import Divider from "../Divider.svelte";
+  import { ExpenseChartService } from "../../services";
 
   let { expenses, cutoff, groupBy } = $props();
 
   let divChart: HTMLDivElement;
   let apexChart = $state<ApexCharts>();
 
-  const series = $derived(getSeriesData(expenses, cutoff, groupBy));
+  const chart = $derived(new ExpenseChartService(expenses, groupBy, cutoff));
+  const chartSeries = $derived(chart.series);
   const chartConfig = $derived({
-    series: series.map((s) => s.data[2]), // last month
+    series: chartSeries.map((s) => s.data[2]), // last month
     chart: { type: "donut", height: 320, toolbar: { show: false } },
-    labels: series.map((s) => s.name),
+    labels: chartSeries.map((s) => s.name),
     dataLabels: {
       enabled: true,
       formatter: (v: number) => `${Math.trunc(v)} %`,
