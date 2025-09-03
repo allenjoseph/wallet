@@ -8,6 +8,16 @@ interface Serie {
 
 export class ExpenseChartService {
   series: Serie[] = [];
+  colors = [
+    "#002d9c",
+    "#6929c4",
+    "#198038",
+    "#9f1853",
+    "#8a3800",
+    "#012749",
+    "#005d5d",
+    "#570408",
+  ];
 
   constructor(
     private readonly expenses: Expense[],

@@ -42,6 +42,7 @@
       },
     },
     legend: { show: true, position: "top" },
+    colors: chart.colors,
   });
 
   function apexTotal(w: any) {

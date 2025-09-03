@@ -19,7 +19,12 @@
   const chartSeries = $derived(chart.series);
   const chartConfig = $derived({
     series: chartSeries,
-    chart: { type: chartType, height: 320, toolbar: { show: false } },
+    chart: {
+      type: chartType,
+      height: 320,
+      toolbar: { show: false },
+      zoom: { enabled: false },
+    },
     plotOptions: {
       ...(chartType === "bar"
         ? {
@@ -32,13 +37,20 @@
           }
         : {}),
     },
-    dataLabels: { enabled: chartType === "line" },
+    dataLabels: {
+      enabled: chartType === "line",
+      style: {
+        fontSize: "16px",
+        fontWeight: "lighter",
+      },
+    },
     xaxis: { categories: chart.getBarCategories(cutoff) },
     tooltip: {
       marker: { show: false },
       x: { show: false },
       y: { formatter: (v: number) => `S/ ${v}` },
     },
+    colors: chart.colors,
   });
 
   $effect(() => {
