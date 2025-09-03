@@ -40,6 +40,23 @@ export class ExpenseChartService {
       data: ranges.map((range) => range.sumBy(this.tagGroup, tag)),
     }));
   }
+
+  getBarCategories(cutoff: Dayjs) {
+    return [
+      `${cutoff.subtract(2, "M").format("MMM")} S/${this.series.reduce(
+        (acc, s) => acc + s.data[0],
+        0
+      )}`,
+      `${cutoff.subtract(1, "M").format("MMM")} S/${this.series.reduce(
+        (acc, s) => acc + s.data[1],
+        0
+      )}`,
+      `${cutoff.format("MMM")} S/${this.series.reduce(
+        (acc, s) => acc + s.data[2],
+        0
+      )}`,
+    ];
+  }
 }
 
 class Range {

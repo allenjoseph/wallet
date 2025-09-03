@@ -1,30 +1,39 @@
 <script lang="ts">
   import ApexCharts from "apexcharts";
-  import type { Dayjs } from "dayjs";
-  import type { ChartSerie } from "../../lib/types";
+  import { ChartLine, ChartColumn } from "lucide-svelte";
   import Divider from "../Divider.svelte";
   import { ExpenseChartService } from "../../services";
+  import Badge from "../badge/Badge.svelte";
 
   let { expenses, cutoff, groupBy } = $props();
 
-  let divChart: HTMLDivElement;
-  let apexChart = $state<ApexCharts>();
+  let barChart: HTMLDivElement;
+  let lineChart: HTMLDivElement;
+
+  let apexCharts = $state<Record<string, ApexCharts>>({});
+
+  let chartType = $state<string>("line");
+  // let numMonths = $state<number>(3);
 
   const chart = $derived(new ExpenseChartService(expenses, groupBy, cutoff));
   const chartSeries = $derived(chart.series);
   const chartConfig = $derived({
     series: chartSeries,
-    chart: { type: "bar", height: 320, toolbar: { show: false } },
+    chart: { type: chartType, height: 320, toolbar: { show: false } },
     plotOptions: {
-      bar: {
-        horizontal: false,
-        columnWidth: "80%",
-        borderRadius: 4,
-        borderRadiusApplication: "end",
-      },
+      ...(chartType === "bar"
+        ? {
+            bar: {
+              horizontal: false,
+              columnWidth: "80%",
+              borderRadius: 4,
+              borderRadiusApplication: "end",
+            },
+          }
+        : {}),
     },
-    dataLabels: { enabled: false },
-    xaxis: { categories: getBarCategories(cutoff, chartSeries) },
+    dataLabels: { enabled: chartType === "line" },
+    xaxis: { categories: chart.getBarCategories(cutoff) },
     tooltip: {
       marker: { show: false },
       x: { show: false },
@@ -32,29 +41,44 @@
     },
   });
 
-  function total(series: ChartSerie[], month: number) {
-    return series.reduce((acc, s) => acc + s.data[month], 0);
-  }
-
-  function getBarCategories(cutoff: Dayjs, series: ChartSerie[]) {
-    return [
-      `${cutoff.subtract(2, "M").format("MMM")} S/${total(series, 0)}`,
-      `${cutoff.subtract(1, "M").format("MMM")} S/${total(series, 1)}`,
-      `${cutoff.format("MMM")} S/${total(series, 2)}`,
-    ];
-  }
-
   $effect(() => {
-    if (!apexChart) {
-      apexChart = new ApexCharts(divChart, chartConfig);
-      apexChart.render();
+    if (!apexCharts[chartType]) {
+      apexCharts[chartType] = new ApexCharts(barChart, chartConfig);
+      apexCharts[chartType].render();
     } else {
-      apexChart.updateOptions(chartConfig);
+      apexCharts[chartType].updateOptions(chartConfig, false, false);
     }
   });
 </script>
 
-<Divider>Last 3 months</Divider>
+<Divider>Last months</Divider>
+<div class="flex justify-between">
+  <div class="flex items-start gap-2 flex-wrap">
+    <Badge
+      Icon={ChartLine}
+      selected={chartType === "line"}
+      onclick={() => (chartType = "line")}
+    >
+      Line
+    </Badge>
+    <Badge
+      Icon={ChartColumn}
+      selected={chartType === "bar"}
+      onclick={() => (chartType = "bar")}
+    >
+      Bar
+    </Badge>
+  </div>
+  <!-- <div class="flex items-start gap-2 flex-wrap">
+    <Badge selected={numMonths === 3} onclick={() => (numMonths = 3)}>
+      3 months
+    </Badge>
+    <Badge selected={numMonths === 6} onclick={() => (numMonths = 6)}>
+      6 months
+    </Badge>
+  </div> -->
+</div>
 <div class="card">
-  <div bind:this={divChart}></div>
+  <div bind:this={barChart}></div>
+  <div bind:this={lineChart}></div>
 </div>

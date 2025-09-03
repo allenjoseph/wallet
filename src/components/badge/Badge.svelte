@@ -1,6 +1,6 @@
 <script lang="ts">
   interface Props {
-    Icon: any;
+    Icon?: any;
     small?: boolean;
     disabled?: boolean;
     onclick?: () => void;
@@ -38,7 +38,9 @@
   {onclick}
   disabled={!onclick || disabled}
 >
-  <Icon size={small ? 14 : 16} />
+  {#if Icon}
+    <Icon size={small ? 14 : 16} />
+  {/if}
   <p class={["whitespace-nowrap", small ? "text-xs font-medium" : "text-sm"]}>
     {@render children?.()}
   </p>
