@@ -2,20 +2,15 @@
   import Divider from "../components/Divider.svelte";
   import ExpenseCard from "../components/card/ExpenseCard.svelte";
   import View from "../components/View.svelte";
-  import { wallet } from "../lib/state.svelte";
-  import { type Filter } from "../lib/types";
+  import { wallet } from "../state.svelte";
   import ExpenseAmount from "../components/expense/ExpenseAmount.svelte";
-  import {
-    sumMonthPeriod,
-    filterExpenses,
-    loaderDecorator,
-  } from "../lib/utils";
+  import { sumMonthPeriod, filterExpenses, loaderDecorator } from "../utils";
   import ExpenseFilters from "../components/expense/ExpenseFilters.svelte";
   import MainCard from "../components/card/MainCard.svelte";
-  import { routes } from "../lib/routes";
+  import { routes } from "../routes";
   import ExpenseMonthlyPeriodDay from "../components/expense/ExpenseMonthlyPeriodDay.svelte";
   import { expenseRepo } from "../repositories";
-  import type { Doc, Expense, TagGroup } from "../entities";
+  import type { Doc, Expense, TagGroup, Filter } from "../entities";
 
   let allExpenses = $state<Expense[]>();
   let fSelected = $state<Filter>();

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { PiggyBank } from "lucide-svelte";
-  import { wallet } from "../lib/state.svelte";
+  import { wallet } from "../state.svelte";
   import { authService } from "../services";
   import Button from "../components/Button.svelte";
 

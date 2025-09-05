@@ -1,9 +1,9 @@
 <script lang="ts">
   import { CornerUpLeft, Plus } from "lucide-svelte";
-  import { wallet } from "../../lib/state.svelte";
+  import { wallet } from "../../state.svelte";
   import MenuItem from "../MenuItem.svelte";
-  import type { Route } from "../../lib/types";
-  import { routes } from "../../lib/routes";
+  import type { Route } from "../../entities";
+  import { routes } from "../../routes";
 
   function onSelectMenu(item: Route) {
     wallet.selectedExpense = null;

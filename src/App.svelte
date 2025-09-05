@@ -8,7 +8,7 @@
   import Sources from "./views/Sources.svelte";
   import Login from "./views/Login.svelte";
   import Charts from "./views/Charts.svelte";
-  import { wallet } from "./lib/state.svelte";
+  import { wallet } from "./state.svelte";
 </script>
 
 <main class="flex">

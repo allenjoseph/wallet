@@ -7,7 +7,7 @@ import {
 } from "firebase/firestore";
 import type { Expense } from "../entities";
 import { BaseRepo } from "./BaseRepo";
-import { db } from "./db";
+import { db } from "../db";
 
 class ExpenseRepo extends BaseRepo<Expense> {
   constructor(ref: CollectionReference) {

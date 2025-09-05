@@ -3,8 +3,7 @@ import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
 
 import { wallet } from "./state.svelte";
-import { type Filter } from "./types";
-import type { Expense } from "../entities";
+import type { Expense, Filter } from "./entities";
 
 export function loaderDecorator(cb: () => Promise<any>) {
   return async () => {

@@ -5,12 +5,12 @@
   import Button from "../components/Button.svelte";
   import View from "../components/View.svelte";
   import Input from "../components/Input.svelte";
-  import { wallet } from "../lib/state.svelte";
+  import { wallet } from "../state.svelte";
   import { CreditCard, ShoppingCart } from "lucide-svelte";
-  import { loaderDecorator } from "../lib/utils";
+  import { loaderDecorator } from "../utils";
   import Divider from "../components/Divider.svelte";
   import MainCard from "../components/card/MainCard.svelte";
-  import { routes } from "../lib/routes";
+  import { routes } from "../routes";
   import { categoryRepo, expenseRepo, sourceRepo } from "../repositories";
   import type { Expense } from "../entities";
 

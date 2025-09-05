@@ -1,19 +1,17 @@
 <script lang="ts">
   import ApexCharts from "apexcharts";
-  import Divider from "../Divider.svelte";
-  import { ExpenseChartService } from "../../services";
+  import type { ExpenseChart } from "../../helpers";
 
-  let { expenses, cutoff, groupBy } = $props();
+  let { chart }: { chart: ExpenseChart } = $props();
 
   let divChart: HTMLDivElement;
   let apexChart = $state<ApexCharts>();
 
-  const chart = $derived(new ExpenseChartService(expenses, groupBy, cutoff));
   const chartSeries = $derived(chart.series);
   const chartConfig = $derived({
-    series: chartSeries.map((s) => s.data[2]), // last month
+    series: chartSeries.map((s) => s.data[s.data.length - 1]), // last month
     chart: { type: "donut", height: 320, toolbar: { show: false } },
-    labels: chartSeries.map((s) => s.name),
+    labels: chart.labels,
     dataLabels: {
       enabled: true,
       formatter: (v: number) => `${Math.trunc(v)} %`,
@@ -41,7 +39,12 @@
         },
       },
     },
-    legend: { show: true, position: "top" },
+    legend: {
+      show: true,
+      position: "right",
+      fontSize: "18px",
+      itemMargin: { horizontal: 0, vertical: 4 },
+    },
     colors: chart.colors,
   });
 
@@ -62,7 +65,6 @@
   });
 </script>
 
-<Divider>Last month</Divider>
 <div class="card">
   <div bind:this={divChart}></div>
 </div>

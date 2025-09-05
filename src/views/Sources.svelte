@@ -4,7 +4,7 @@
   import View from "../components/View.svelte";
   import Divider from "../components/Divider.svelte";
   import Card from "../components/card/Card.svelte";
-  import { loaderDecorator } from "../lib/utils";
+  import { loaderDecorator } from "../utils";
   import MainCard from "../components/card/MainCard.svelte";
   import ChevronButton from "../components/chevron/ChevronButton.svelte";
   import { sourceRepo } from "../repositories";

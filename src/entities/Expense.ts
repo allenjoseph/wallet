@@ -7,9 +7,14 @@ export interface Expense extends Doc {
   [TagGroup.Source]: Doc;
 }
 
-export type Tag = string;
-
 export enum TagGroup {
   Category = "category",
   Source = "source",
+}
+
+export type Tag = string;
+
+export interface Filter {
+  name: TagGroup;
+  id: string;
 }

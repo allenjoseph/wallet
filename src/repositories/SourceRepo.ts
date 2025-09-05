@@ -1,6 +1,6 @@
 import { collection, CollectionReference } from "firebase/firestore";
 import { BaseRepo } from "./BaseRepo";
-import { db } from "./db";
+import { db } from "../db";
 import type { Doc } from "../entities";
 
 class SourceRepo extends BaseRepo<Doc> {

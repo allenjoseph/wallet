@@ -1,6 +1,6 @@
 import { doc, setDoc } from "firebase/firestore";
 import type { User } from "../entities";
-import { db } from "./db";
+import { db } from "../db";
 
 class UserRepo {
   save(user: User) {

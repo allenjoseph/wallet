@@ -1,8 +1,8 @@
 import dayjs, { Dayjs } from "dayjs";
 import type { Route } from "./types";
 import { routes } from "./routes";
-import type { Expense, User } from "../entities";
-import { authService } from "../services";
+import type { Expense, User } from "./entities";
+import { authService } from "./services";
 
 interface WalletState {
   user: User;
