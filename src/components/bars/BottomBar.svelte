@@ -16,9 +16,7 @@
 </script>
 
 <div class="fixed bottom-0 flex justify-between w-screen z-20 px-8 py-4">
-  <ul
-    class="gap-4 px-2 rounded-full flex items-center justify-center bg-gray-100/50 backdrop-blur-[1px]"
-  >
+  <ul class="fab gap-4 px-2">
     {@render menuItem(
       routes.expenses,
       wallet.selectedRoute.path === routes.expenses.path,
@@ -30,12 +28,7 @@
       () => onSelectMenu(routes.charts)
     )}
   </ul>
-  <button
-    class={[
-      "size-10 text-indigo-600 rounded-full flex items-center justify-center bg-gray-100/50 backdrop-blur-[1px]",
-    ]}
-    onclick={onSelectAdd}
-  >
+  <button class="fab size-10 text-indigo-600" onclick={onSelectAdd}>
     {#if wallet.selectedRoute.routeAdd}
       <Plus size={24} />
     {:else}
