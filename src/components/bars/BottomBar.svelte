@@ -15,25 +15,24 @@
   }
 </script>
 
-<div
-  class="fixed bottom-0 flex justify-between w-screen border-t bg-white z-20 mb-[env(safe-area-inset-bottom)] after:inset-x-0 after:absolute after:-bottom-8 after:h-8 after:bg-white p-3"
->
-  <ul class="flex-1 flex items-center">
-    {#each Object.values(routes) as item}
-      <li class="size-12 flex">
-        <MenuItem
-          title={item.title}
-          selected={wallet.selectedRoute.path === item.path}
-          onSelect={() => onSelectMenu(item)}
-        >
-          <item.Icon size={24} />
-        </MenuItem>
-      </li>
-    {/each}
+<div class="fixed bottom-0 flex justify-between w-screen z-20 px-8 py-4">
+  <ul
+    class="gap-4 px-2 rounded-full flex items-center justify-center bg-gray-100/50 backdrop-blur-[1px]"
+  >
+    {@render menuItem(
+      routes.expenses,
+      wallet.selectedRoute.path === routes.expenses.path,
+      () => onSelectMenu(routes.expenses)
+    )}
+    {@render menuItem(
+      routes.charts,
+      wallet.selectedRoute.path === routes.charts.path,
+      () => onSelectMenu(routes.charts)
+    )}
   </ul>
   <button
     class={[
-      "rounded-lg p-4 flex items-center justify-center bg-indigo-50 text-indigo-600",
+      "size-10 text-indigo-600 rounded-full flex items-center justify-center bg-gray-100/50 backdrop-blur-[1px]",
     ]}
     onclick={onSelectAdd}
   >
@@ -44,3 +43,11 @@
     {/if}
   </button>
 </div>
+
+{#snippet menuItem(item: Route, selected: boolean, onSelect: () => void)}
+  <li class="size-10 flex">
+    <MenuItem title={item.title} {selected} {onSelect}>
+      <item.Icon size={28} />
+    </MenuItem>
+  </li>
+{/snippet}

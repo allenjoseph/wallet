@@ -2,6 +2,8 @@
   import { EllipsisVertical } from "lucide-svelte";
   import { wallet } from "../../state.svelte";
   import { authService } from "../../services";
+  import type { Route } from "../../entities";
+  import { routes } from "../../routes";
 
   let hasImage = $state(true);
   let isSettingsOpen = $state(false);
@@ -13,6 +15,25 @@
   function signOut() {
     authService.logOut().then(() => (wallet.user = null as never));
   }
+
+  function onSelectMenuItem(item: Route) {
+    wallet.selectedExpense = null;
+    wallet.selectedRoute = item;
+  }
+
+  function toggleMenu(e: Event) {
+    e.stopPropagation(); // avoid that the document listener close the menu
+    isSettingsOpen = !isSettingsOpen;
+  }
+
+  $effect(() => {
+    // Close menu when user do a click in the document
+    document.addEventListener("click", () => {
+      if (isSettingsOpen) {
+        isSettingsOpen = false;
+      }
+    });
+  });
 </script>
 
 <div class="fixed flex w-screen h-14 bg-white z-20 p-2">
@@ -43,7 +64,7 @@
         "flex justify-center items-center rounded-lg p-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700",
       ]}
       title="Settings"
-      onclick={() => (isSettingsOpen = !isSettingsOpen)}
+      onclick={toggleMenu}
     >
       <EllipsisVertical size={24} />
     </button>
@@ -52,14 +73,26 @@
         class="absolute end-0 z-10 rounded-lg border border-gray-100 bg-white shadow-lg p-1"
         role="menu"
       >
-        <button
-          class="rounded-lg px-4 py-2 text-left w-full text-nowrap hover:bg-gray-50 text-sm"
-          role="menuitem"
-          onclick={signOut}
-        >
-          Log out
-        </button>
+        {@render menuItem(
+          "Categories",
+          onSelectMenuItem.bind(null, routes.category)
+        )}
+        {@render menuItem(
+          "Sources",
+          onSelectMenuItem.bind(null, routes.source)
+        )}
+        {@render menuItem("Log out", signOut)}
       </div>
     {/if}
   </div>
 </div>
+
+{#snippet menuItem(title: string, onClick: () => void)}
+  <button
+    class="rounded-lg px-4 py-2 text-left w-full text-nowrap hover:bg-gray-50 text-sm"
+    role="menuitem"
+    onclick={onClick}
+  >
+    {title}
+  </button>
+{/snippet}
