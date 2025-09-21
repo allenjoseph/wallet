@@ -16,7 +16,7 @@
 </script>
 
 <div class="fixed bottom-0 flex justify-between w-screen z-20 px-8 py-4">
-  <ul class="fab gap-4 px-2">
+  <ul class="fab px-2 flex justify-between">
     {@render menuItem(
       routes.expenses,
       wallet.selectedRoute.path === routes.expenses.path,
@@ -28,19 +28,17 @@
       () => onSelectMenu(routes.charts)
     )}
   </ul>
-  <button class="fab size-10 text-indigo-600" onclick={onSelectAdd}>
+  <button class="fab size-14 text-gray-600" onclick={onSelectAdd}>
     {#if wallet.selectedRoute.routeAdd}
-      <Plus size={24} />
+      <Plus size={28} />
     {:else}
-      <CornerUpLeft size={24} />
+      <CornerUpLeft size={28} />
     {/if}
   </button>
 </div>
 
 {#snippet menuItem(item: Route, selected: boolean, onSelect: () => void)}
-  <li class="size-10 flex">
-    <MenuItem title={item.title} {selected} {onSelect}>
-      <item.Icon size={28} />
-    </MenuItem>
+  <li class="w-20 flex">
+    <MenuItem {...item} {selected} {onSelect} />
   </li>
 {/snippet}

@@ -16,5 +16,5 @@
 }
 
 .fab {
-  @apply rounded-full flex items-center justify-center bg-gray-100/50 backdrop-blur-md inset-shadow-2xs;
+  @apply rounded-full flex items-center justify-center bg-gray-100/50 backdrop-blur-md inset-shadow-xs;
 }
