@@ -5,6 +5,7 @@ export interface Expense extends Doc {
   expenseDate: Date;
   [TagGroup.Category]: Doc;
   [TagGroup.Source]: Doc;
+  numberOfTimes?: number;
 }
 
 export enum TagGroup {

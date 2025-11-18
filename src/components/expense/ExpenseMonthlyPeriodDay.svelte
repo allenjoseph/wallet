@@ -29,6 +29,7 @@
     <ChevronDown size={12} />
   </button>
   <input
+    id="monthly-period-day"
     type="date"
     class="absolute w-full opacity-0 top-0 p-0"
     onkeydown={(e) => e.preventDefault()}

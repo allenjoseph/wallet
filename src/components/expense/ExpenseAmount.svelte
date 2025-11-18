@@ -25,7 +25,7 @@
   });
 </script>
 
-<div class="flex flex-col gap-2">
+<div class="flex-1 flex flex-col gap-2">
   <p class="text-sm text-gray-500">Amount</p>
   <button class="text-4xl font-medium self-start text-nowrap" onclick={onClick}>
     S/ <span class={[animate && "typewriter"]}>
@@ -33,6 +33,7 @@
     </span>
   </button>
   <input
+    id="amount"
     type="number"
     inputmode="decimal"
     class="p-0 opacity-0 w-0 h-0 overflow-hidden"
@@ -40,6 +41,7 @@
     bind:this={amount$}
     disabled={readonly}
     onblur={onBlur}
+    autocomplete="off"
   />
 </div>
 

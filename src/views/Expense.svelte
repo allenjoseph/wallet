@@ -13,6 +13,7 @@
   import { routes } from "../routes";
   import { categoryRepo, expenseRepo, sourceRepo } from "../repositories";
   import type { Expense } from "../entities";
+  import ExpenseRecurrent from "../components/expense/ExpenseRecurrent.svelte";
 
   let expenseDate: string = $state(
     dayjs(wallet.selectedExpense?.expenseDate).format("YYYY-MM-DDTHH:mm")
@@ -36,18 +37,30 @@
   );
 
   async function onSave() {
-    await expenseRepo.save({
-      ...expense,
-      expenseDate: dayjs(expenseDate).toDate(),
-    });
+    const times =
+      Number(expense.numberOfTimes) > 1 ? Number(expense.numberOfTimes) : 1;
+
+    for (let i = 0; i < times; i++) {
+      await expenseRepo.save({
+        ...expense,
+        expenseDate: dayjs(expenseDate).add(i, "month").toDate(),
+      });
+    }
     wallet.selectedRoute = routes.expenses;
+  }
+
+  function onChangeRecurrent(numberOfTimes: number) {
+    expense.numberOfTimes = numberOfTimes;
   }
 </script>
 
 <View>
   <Divider>Add / Edit</Divider>
   <MainCard>
-    <ExpenseAmount bind:amount={expense.amount} />
+    <div class="flex gap-4 items-stretch">
+      <ExpenseAmount bind:amount={expense.amount} />
+      <ExpenseRecurrent onChange={onChangeRecurrent} />
+    </div>
     <Input name="expenseDate" bind:value={expenseDate} type="datetime-local" />
     <Input name="name" bind:value={expense.name} />
     <div class="flex items-start gap-2 flex-wrap">
