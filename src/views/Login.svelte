@@ -27,7 +27,7 @@
       <p class="text-center text-sm text-gray-500">
         You need a Google account.
       </p>
-      <Button onClick={authService.logIn}>Enter</Button>
+      <Button onClick={() => authService.logIn()}>Enter</Button>
     </form>
   </div>
 </div>
