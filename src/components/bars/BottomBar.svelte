@@ -15,7 +15,9 @@
   }
 </script>
 
-<div class="fixed bottom-0 flex justify-between w-screen z-20 px-8 py-4">
+<div
+  class="fixed bottom-0 flex justify-between w-screen z-20 px-8 pb-4 bg-linear-to-b from-white/0 to-white"
+>
   <ul class="fab px-2 flex justify-between">
     {@render menuItem(
       routes.expenses,

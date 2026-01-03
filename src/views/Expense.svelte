@@ -43,6 +43,7 @@
     for (let i = 0; i < times; i++) {
       await expenseRepo.save({
         ...expense,
+        name: times > 1 ? `${expense.name} ${i + 1}/${times}` : expense.name,
         expenseDate: dayjs(expenseDate).add(i, "month").toDate(),
       });
     }

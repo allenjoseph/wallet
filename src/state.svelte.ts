@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from "dayjs";
-import type { Route } from "./types";
+import type { Route } from "./entities";
 import { routes } from "./routes";
 import type { Expense, User } from "./entities";
 import { authService } from "./services";
