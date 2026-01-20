@@ -11,11 +11,15 @@
 
   let amount$: HTMLInputElement;
   let animate = $state(!readonly);
-  let textColor = $derived(() => {
-    if (!limit || !amount) return;
-    if (amount > limit * 0.8) return "text-red-600";
-    if (amount > limit * 0.5) return "text-amber-600";
-  });
+  let textColor = $derived(
+    limit && amount
+      ? amount > limit * 0.8
+        ? "text-red-600"
+        : amount > limit * 0.5
+          ? "text-amber-600"
+          : null
+      : null,
+  );
 
   function onClick() {
     animate = true;
@@ -36,23 +40,30 @@
     <p class="text-sm text-gray-500">Amount</p>
     {#if limit}
       <p class="text-sm text-gray-500">
-        limit: S/ {limit.toFixed(2)}
+        limit: S/ {limit}
       </p>
     {/if}
   </div>
-  <button
-    class={["text-4xl font-medium self-start text-nowrap", textColor]}
-    onclick={onClick}
-  >
-    S/ <span class={[animate && "typewriter"]}>
-      {readonly ? (amount?.toFixed(2) ?? "-.--") : amount}
-    </span>
-  </button>
+  <div class="flex justify-between">
+    <button
+      class="text-4xl font-medium self-start text-nowrap"
+      onclick={onClick}
+    >
+      S/ <span class={[animate && "typewriter"]}>
+        {readonly ? (amount?.toFixed(2) ?? "-.--") : amount}
+      </span>
+    </button>
+    {#if limit}
+      <p class={["text-4xl text-gray-500 font-light", textColor]}>
+        {limit ? `${(((amount ?? 0) / limit) * 100).toFixed(0)}%` : ""}
+      </p>
+    {/if}
+  </div>
   <input
     id="amount"
     type="number"
     inputmode="decimal"
-    class="p-0 opacity-0 w-0 h-0 overflow-hidden"
+    class="p-0 opacity-0 w-0 h-0 overflow-hidden text-transparent"
     bind:value={amount}
     bind:this={amount$}
     disabled={readonly}

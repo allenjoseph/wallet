@@ -30,6 +30,10 @@
     await categoryRepo.delete(id);
     categories$ = categoryRepo.getAll();
   }
+
+  function totalLimit(categories: Category[]) {
+    return categories.reduce((acc, curr) => acc + (curr.limit || 0), 0);
+  }
 </script>
 
 <View>
@@ -59,6 +63,10 @@
   {:then categories}
     {#if categories.length === 0}
       <small class="text-gray-600">No categories found.</small>
+    {:else}
+      <small class="text-gray-600">
+        {categories.length} categories found. Limit: S/ {totalLimit(categories)}
+      </small>
     {/if}
     {#each categories as item}
       <Card

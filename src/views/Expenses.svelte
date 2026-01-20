@@ -64,6 +64,8 @@
   {:else}
     {#if expenses.length === 0}
       <small class="text-gray-600">No expenses found.</small>
+    {:else}
+      <small class="text-gray-600">{expenses.length} expenses found.</small>
     {/if}
     {#each expenses as expense (expense.id)}
       <ExpenseCard

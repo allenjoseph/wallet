@@ -4,6 +4,7 @@
   import type { Doc } from "../../entities";
 
   interface Props extends Doc {
+    limit?: number;
     onedit: () => void;
     ondelete: () => void;
   }
@@ -17,8 +18,13 @@
   </p>
   <p class="font-medium">
     {item.name}
+    <span class="text-sm font-light">
+      {item.description}
+    </span>
   </p>
-  <p class="text-sm">{item.description}</p>
+  <p class="text-sm">
+    Limit: S/ {item.limit ?? "--"}
+  </p>
   <button
     class="absolute top-4 right-4 text-indigo-500 bg-white"
     onclick={onedit}
