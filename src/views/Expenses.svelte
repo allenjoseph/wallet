@@ -10,10 +10,12 @@
   import { routes } from "../routes";
   import ExpenseMonthlyPeriodDay from "../components/expense/ExpenseMonthlyPeriodDay.svelte";
   import { expenseRepo } from "../repositories";
-  import type { Doc, Expense, TagGroup, Filter } from "../entities";
+  import { TagGroup } from "../entities";
+  import type { Doc, Expense, Filter, Category } from "../entities";
 
   let allExpenses = $state<Expense[]>();
   let fSelected = $state<Filter>();
+  let currentLimit = $state<number>(0);
 
   let expenses = $derived(filterExpenses(allExpenses, fSelected));
   let total = $derived(sumMonthPeriod(expenses, wallet.monthlyPeriodDay));
@@ -31,6 +33,11 @@
   function onFilter(name: TagGroup, item: Doc) {
     fSelected =
       !item.id || fSelected?.id === item.id ? undefined : { name, id: item.id };
+
+    currentLimit =
+      fSelected && name === TagGroup.Category
+        ? ((item as Category).limit ?? 0)
+        : 0;
   }
 
   $effect(() => {
@@ -47,7 +54,7 @@
     <ExpenseMonthlyPeriodDay bind:day={wallet.monthlyPeriodDay} />
   </Divider>
   <MainCard>
-    <ExpenseAmount amount={total} readonly />
+    <ExpenseAmount amount={total} limit={currentLimit} readonly />
   </MainCard>
   <ExpenseFilters onclick={onFilter} selected={fSelected?.id} />
 

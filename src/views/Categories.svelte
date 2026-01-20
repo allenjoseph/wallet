@@ -8,10 +8,10 @@
   import MainCard from "../components/card/MainCard.svelte";
   import ChevronButton from "../components/chevron/ChevronButton.svelte";
   import { categoryRepo } from "../repositories";
-  import type { Doc } from "../entities";
+  import type { Category } from "../entities";
 
   let showForm = $state(false);
-  let category = $state<Doc>({ name: "", description: "" });
+  let category = $state<Category>({ name: "", description: "" });
   let categories$ = $state(categoryRepo.getAll());
 
   let isInvalid = $derived(!category.name || !category.description);
@@ -22,7 +22,7 @@
     categories$ = categoryRepo.getAll();
   }
 
-  async function onEdit(item: Doc) {
+  async function onEdit(item: Category) {
     category = { ...item };
   }
 
@@ -38,6 +38,12 @@
     <MainCard>
       <Input name="name" bind:value={category.name} />
       <Input name="description" bind:value={category.description} />
+      <Input
+        name="limit"
+        type="number"
+        inputmode="decimal"
+        bind:value={category.limit}
+      />
       <footer class="self-end">
         <Button onClick={loaderDecorator(onSave)} disabled={isInvalid}>
           Save

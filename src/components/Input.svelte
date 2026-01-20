@@ -6,6 +6,7 @@
     placeholder?: string;
     value?: string | number;
     min?: number;
+    inputmode?: any;
   }
 
   let {
@@ -18,7 +19,7 @@
   }: Props = $props();
 
   const _label = $derived(
-    label ?? name.charAt(0).toUpperCase() + name.slice(1)
+    label ?? name.charAt(0).toUpperCase() + name.slice(1),
   );
 </script>
 

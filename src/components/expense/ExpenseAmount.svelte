@@ -4,12 +4,18 @@
   interface Props {
     amount?: number;
     readonly?: boolean;
+    limit?: number;
   }
 
-  let { amount = $bindable(), readonly = false }: Props = $props();
+  let { amount = $bindable(), readonly = false, limit = 0 }: Props = $props();
 
-  let animate = $state(!readonly);
   let amount$: HTMLInputElement;
+  let animate = $state(!readonly);
+  let textColor = $derived(() => {
+    if (!limit || !amount) return;
+    if (amount > limit * 0.8) return "text-red-600";
+    if (amount > limit * 0.5) return "text-amber-600";
+  });
 
   function onClick() {
     animate = true;
@@ -26,8 +32,18 @@
 </script>
 
 <div class="flex-1 flex flex-col gap-2">
-  <p class="text-sm text-gray-500">Amount</p>
-  <button class="text-4xl font-medium self-start text-nowrap" onclick={onClick}>
+  <div class="flex justify-between">
+    <p class="text-sm text-gray-500">Amount</p>
+    {#if limit}
+      <p class="text-sm text-gray-500">
+        limit: S/ {limit.toFixed(2)}
+      </p>
+    {/if}
+  </div>
+  <button
+    class={["text-4xl font-medium self-start text-nowrap", textColor]}
+    onclick={onClick}
+  >
     S/ <span class={[animate && "typewriter"]}>
       {readonly ? (amount?.toFixed(2) ?? "-.--") : amount}
     </span>

@@ -1,9 +1,9 @@
 import { collection, CollectionReference } from "firebase/firestore";
 import { BaseRepo } from "./BaseRepo";
 import { db } from "../db";
-import type { Doc } from "../entities";
+import type { Category } from "../entities";
 
-class CategoryRepo extends BaseRepo<Doc> {
+class CategoryRepo extends BaseRepo<Category> {
   constructor(ref: CollectionReference) {
     super(ref);
   }
