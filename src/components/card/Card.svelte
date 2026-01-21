@@ -18,13 +18,15 @@
   </p>
   <p class="font-medium">
     {item.name}
-    <span class="text-sm font-light">
-      {item.description}
-    </span>
   </p>
-  <p class="text-sm">
-    Limit: S/ {item.limit ?? "--"}
+  <p class="text-sm font-light">
+    {item.description}
   </p>
+  {#if item.limit}
+    <p class="text-sm pt-1">
+      Limit: S/ {item.limit ?? "--"}
+    </p>
+  {/if}
   <button
     class="absolute top-4 right-4 text-indigo-500 bg-white"
     onclick={onedit}

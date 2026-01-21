@@ -8,8 +8,10 @@ class CategoryRepo extends BaseRepo<Category> {
     super(ref);
   }
 
-  getAll() {
-    return this.queryDocs();
+  async getAll() {
+    return this.queryDocs().then((docs) =>
+      docs.toSorted((a, b) => a.name.localeCompare(b.name)),
+    );
   }
 }
 

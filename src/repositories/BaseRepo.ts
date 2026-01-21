@@ -18,7 +18,7 @@ export abstract class BaseRepo<T extends Doc> {
 
   protected async queryDocs(
     constraints: QueryConstraint[] = [],
-    orderByField = "datetime"
+    orderByField = "datetime",
   ) {
     constraints = [
       where("owner", "==", this.getOwner()),
@@ -28,7 +28,7 @@ export abstract class BaseRepo<T extends Doc> {
 
     const snapshot = await getDocs(query(this.ref, ...constraints));
 
-    return snapshot.docs.map((item) => this.mapTimestampsToDate(item));
+    return snapshot.docs.map<T>((item) => this.mapTimestampsToDate(item));
   }
 
   async save(item: T) {

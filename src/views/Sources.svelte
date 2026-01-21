@@ -8,10 +8,10 @@
   import MainCard from "../components/card/MainCard.svelte";
   import ChevronButton from "../components/chevron/ChevronButton.svelte";
   import { sourceRepo } from "../repositories";
-  import type { Doc } from "../entities";
+  import type { Source } from "../entities";
 
   let showForm = $state(false);
-  let source = $state<Doc>({ name: "", description: "" });
+  let source = $state<Source>({ name: "", description: "" });
   let sources$ = $state(sourceRepo.getAll());
 
   let isInvalid = $derived(!source.name || !source.description);
@@ -22,13 +22,20 @@
     sources$ = sourceRepo.getAll();
   }
 
-  function onEdit(item: Doc) {
+  function onEdit(item: Source) {
     source = { ...item };
+    showForm = true;
+    scrollTo(0, 0);
   }
 
   async function onDelete(id: string) {
     await sourceRepo.delete(id);
     sources$ = sourceRepo.getAll();
+  }
+
+  function onCancel() {
+    source = { name: "", description: "" };
+    showForm = false;
   }
 </script>
 
@@ -38,7 +45,14 @@
     <MainCard>
       <Input name="name" bind:value={source.name} />
       <Input name="description" bind:value={source.description} />
-      <footer class="self-end">
+      <Input
+        name="limit"
+        type="number"
+        inputmode="decimal"
+        bind:value={source.limit}
+      />
+      <footer class="self-end flex gap-2">
+        <Button onClick={onCancel} secondary>Cancel</Button>
         <Button onClick={loaderDecorator(onSave)} disabled={isInvalid}>
           Save
         </Button>

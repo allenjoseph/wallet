@@ -24,11 +24,18 @@
 
   async function onEdit(item: Category) {
     category = { ...item };
+    showForm = true;
+    scrollTo(0, 0);
   }
 
   async function onDelete(id: string) {
     await categoryRepo.delete(id);
     categories$ = categoryRepo.getAll();
+  }
+
+  function onCancel() {
+    category = { name: "", description: "" };
+    showForm = false;
   }
 
   function totalLimit(categories: Category[]) {
@@ -48,7 +55,8 @@
         inputmode="decimal"
         bind:value={category.limit}
       />
-      <footer class="self-end">
+      <footer class="self-end flex gap-2">
+        <Button onClick={onCancel} secondary>Cancel</Button>
         <Button onClick={loaderDecorator(onSave)} disabled={isInvalid}>
           Save
         </Button>
