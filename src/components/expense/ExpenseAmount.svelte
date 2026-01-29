@@ -13,7 +13,7 @@
   let animate = $state(!readonly);
   let textColor = $derived(
     limit && amount
-      ? amount > limit * 0.8
+      ? amount > limit
         ? "text-red-600"
         : amount > limit * 0.5
           ? "text-amber-600"
@@ -54,7 +54,7 @@
       </span>
     </button>
     {#if limit}
-      <p class={["text-4xl text-gray-500 font-light", textColor]}>
+      <p class={["text-4xl  font-light", textColor ?? "text-gray-500"]}>
         {limit ? `${(((amount ?? 0) / limit) * 100).toFixed(0)}%` : ""}
       </p>
     {/if}

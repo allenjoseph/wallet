@@ -3,7 +3,7 @@ import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
 
 import { wallet } from "./state.svelte";
-import type { Expense, Filter } from "./entities";
+import type { Category, Expense, Filter } from "./entities";
 
 export function loaderDecorator(cb: () => Promise<any>) {
   return async () => {
@@ -18,8 +18,8 @@ export function sumMonthPeriod(expenses: Expense[] = [], monthDay: Dayjs) {
     .filter((i) =>
       dayjs(i.expenseDate).isBetween(
         monthDay.startOf("day"),
-        monthDay.add(1, "month").endOf("day")
-      )
+        monthDay.add(1, "month").endOf("day"),
+      ),
     )
     .reduce((acc, i) => acc + i.amount, 0);
 }
@@ -66,4 +66,8 @@ export function formatCurrency(value: number, digits = 0) {
     minimumFractionDigits: digits,
     maximumFractionDigits: digits,
   });
+}
+
+export function getTotalLimit(categories?: Category[]) {
+  return categories?.reduce((acc, cat) => acc + (cat.limit ?? 0), 0) ?? 0;
 }

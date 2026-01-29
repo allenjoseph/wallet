@@ -4,7 +4,7 @@
   import View from "../components/View.svelte";
   import Divider from "../components/Divider.svelte";
   import Card from "../components/card/Card.svelte";
-  import { loaderDecorator } from "../utils";
+  import { getTotalLimit, loaderDecorator } from "../utils";
   import MainCard from "../components/card/MainCard.svelte";
   import ChevronButton from "../components/chevron/ChevronButton.svelte";
   import { categoryRepo } from "../repositories";
@@ -36,10 +36,6 @@
   function onCancel() {
     category = { name: "", description: "" };
     showForm = false;
-  }
-
-  function totalLimit(categories: Category[]) {
-    return categories.reduce((acc, curr) => acc + (curr.limit || 0), 0);
   }
 </script>
 
@@ -73,7 +69,9 @@
       <small class="text-gray-600">No categories found.</small>
     {:else}
       <small class="text-gray-600">
-        {categories.length} categories found. Limit: S/ {totalLimit(categories)}
+        {categories.length} categories found. Limit: S/ {getTotalLimit(
+          categories,
+        )}
       </small>
     {/if}
     {#each categories as item}
