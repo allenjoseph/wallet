@@ -11,15 +11,7 @@
 
   let amount$: HTMLInputElement;
   let animate = $state(!readonly);
-  let textColor = $derived(
-    limit && amount
-      ? amount > limit
-        ? "text-red-600"
-        : amount > limit * 0.5
-          ? "text-amber-600"
-          : null
-      : null,
-  );
+  let textColor = $state("text-gray-500");
 
   function onClick() {
     animate = true;
@@ -29,6 +21,14 @@
   function onBlur() {
     animate = false;
   }
+
+  $effect(() => {
+    textColor = "text-gray-500";
+    if (limit && amount) {
+      if (amount > limit * 0.5) textColor = "text-amber-600";
+      if (amount > limit) textColor = "text-red-600";
+    }
+  });
 
   onMount(() => {
     amount$.focus();
@@ -54,7 +54,7 @@
       </span>
     </button>
     {#if limit}
-      <p class={["text-4xl  font-light", textColor ?? "text-gray-500"]}>
+      <p class={["text-4xl  font-light", textColor]}>
         {limit ? `${(((amount ?? 0) / limit) * 100).toFixed(0)}%` : ""}
       </p>
     {/if}
