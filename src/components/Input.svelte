@@ -6,7 +6,14 @@
     placeholder?: string;
     value?: string | number;
     min?: number;
-    inputmode?: any;
+    inputmode?:
+      | "numeric"
+      | "tel"
+      | "email"
+      | "url"
+      | "search"
+      | "none"
+      | "decimal";
   }
 
   let {

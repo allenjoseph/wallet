@@ -28,14 +28,18 @@
     </p>
   {/if}
   <button
+    type="button"
     class="absolute top-4 right-4 text-indigo-500 bg-white"
     onclick={onedit}
+    aria-label="Edit item"
   >
     <Pencil size={18} />
   </button>
   <button
+    type="button"
     class="absolute bottom-4 right-4 text-sm text-red-500 bg-white"
     onclick={ondelete}
+    aria-label="Delete item"
   >
     <Trash2 size={18} />
   </button>

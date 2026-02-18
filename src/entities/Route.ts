@@ -3,4 +3,5 @@ export interface Route {
   path: string;
   Icon: any;
   routeAdd?: Route;
+  view: string;
 }

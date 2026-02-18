@@ -24,6 +24,7 @@
     type="button"
     class="text-indigo-700 flex items-center gap-1"
     onclick={() => dayInput$.showPicker()}
+    aria-label="Select cutoff day"
   >
     {day.format("D MMMM YYYY")}
     <ChevronDown size={12} />

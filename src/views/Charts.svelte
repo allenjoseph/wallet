@@ -3,8 +3,6 @@
   import View from "../components/View.svelte";
   import { wallet } from "../state.svelte";
   import ExpenseMonthlyPeriodDay from "../components/expense/ExpenseMonthlyPeriodDay.svelte";
-  import ChartHistory from "../components/chart/ChartHistory.svelte";
-  import ChartDonut from "../components/chart/ChartDonut.svelte";
   import {
     ChartColumn,
     ChartLine,
@@ -16,6 +14,9 @@
   import { expenseRepo } from "../repositories";
   import { TagGroup } from "../entities";
   import { ExpenseChart } from "../helpers";
+
+  let chartHistory = import("../components/chart/ChartHistory.svelte");
+  let chartDonut = import("../components/chart/ChartDonut.svelte");
 
   let groupBy = $state<TagGroup>(TagGroup.Category);
   let cutoff = $state(wallet.monthlyPeriodDay.clone());
@@ -67,14 +68,16 @@
   </div>
   {#await expenses$ then expensesLastThreeMonths}
     <Divider>Current month</Divider>
-    <ChartDonut
-      chart={new ExpenseChart(
-        expensesLastThreeMonths,
-        groupBy,
-        cutoff,
-        historyMonths
-      )}
-    />
+    {#await chartDonut then { default: ChartDonut }}
+      <ChartDonut
+        chart={new ExpenseChart(
+          expensesLastThreeMonths,
+          groupBy,
+          cutoff,
+          historyMonths,
+        )}
+      />
+    {/await}
 
     <Divider>History</Divider>
     <div class="flex justify-between">
@@ -109,14 +112,16 @@
         </Badge>
       </div>
     </div>
-    <ChartHistory
-      type={historyChart}
-      data={new ExpenseChart(
-        expensesLastThreeMonths,
-        groupBy,
-        cutoff,
-        historyMonths
-      )}
-    />
+    {#await chartHistory then { default: ChartHistory }}
+      <ChartHistory
+        type={historyChart}
+        data={new ExpenseChart(
+          expensesLastThreeMonths,
+          groupBy,
+          cutoff,
+          historyMonths,
+        )}
+      />
+    {/await}
   {/await}
 </View>

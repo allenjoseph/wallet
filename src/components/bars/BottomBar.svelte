@@ -22,15 +22,20 @@
     {@render menuItem(
       routes.expenses,
       wallet.selectedRoute.path === routes.expenses.path,
-      () => onSelectMenu(routes.expenses)
+      () => onSelectMenu(routes.expenses),
     )}
     {@render menuItem(
       routes.charts,
       wallet.selectedRoute.path === routes.charts.path,
-      () => onSelectMenu(routes.charts)
+      () => onSelectMenu(routes.charts),
     )}
   </ul>
-  <button class="fab size-14 text-gray-600" onclick={onSelectAdd}>
+  <button
+    type="button"
+    class="fab size-14 text-gray-600"
+    onclick={onSelectAdd}
+    aria-label={wallet.selectedRoute.routeAdd ? "Add expense" : "Go back"}
+  >
     {#if wallet.selectedRoute.routeAdd}
       <Plus size={28} />
     {:else}
@@ -44,3 +49,10 @@
     <MenuItem {...item} {selected} {onSelect} />
   </li>
 {/snippet}
+
+<style lang="postcss">
+  @reference "../../app.css";
+  .fab {
+    @apply rounded-full flex items-center justify-center bg-gray-100/50 backdrop-blur-md inset-shadow-xs;
+  }
+</style>

@@ -22,6 +22,7 @@
 </script>
 
 <button
+  type="button"
   class={[
     "inline-flex items-center justify-center rounded-full",
     small ? "px-2 py-1 gap-1" : "px-3 py-1 gap-2",

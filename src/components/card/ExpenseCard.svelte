@@ -17,7 +17,12 @@
     <p class="text-xs text-gray-500">
       {dayjs(expense.expenseDate).format("ddd D MMM h:mm A")}
     </p>
-    <button class="text-sm text-indigo-500" onclick={onedit}>
+    <button
+      type="button"
+      class="text-sm text-indigo-500"
+      onclick={onedit}
+      aria-label="Edit expense"
+    >
       <ArrowRight size={18} />
     </button>
   </div>
@@ -38,8 +43,10 @@
     </Badge>
   </div>
   <button
+    type="button"
     class="absolute bottom-4 right-4 text-sm text-red-500"
     onclick={ondelete}
+    aria-label="Delete expense"
   >
     <Trash2 size={18} />
   </button>

@@ -49,6 +49,7 @@
         {:then items}
           {#each items as item}
             <button
+              type="button"
               class="rounded-lg px-4 py-2 text-left w-full text-nowrap hover:bg-gray-50 text-sm"
               role="menuitem"
               onclick={() => onSelect(item)}

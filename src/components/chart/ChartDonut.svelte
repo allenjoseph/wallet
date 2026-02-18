@@ -51,7 +51,7 @@
   function apexTotal(w: any) {
     return w.globals.seriesTotals.reduce(
       (acc: number, v: number) => (acc += v),
-      0
+      0,
     );
   }
 

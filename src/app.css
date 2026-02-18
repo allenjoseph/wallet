@@ -9,12 +9,4 @@
 }
 .card {
   @apply relative rounded-lg p-4 border border-gray-200 shadow-2xs shadow-indigo-100;
-
-  &.card-primary {
-    @apply border-indigo-100 shadow-indigo-300;
-  }
-}
-
-.fab {
-  @apply rounded-full flex items-center justify-center bg-gray-100/50 backdrop-blur-md inset-shadow-xs;
 }

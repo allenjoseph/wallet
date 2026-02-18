@@ -46,6 +46,7 @@
   </div>
   <div class="flex justify-between">
     <button
+      type="button"
       class="text-4xl font-medium self-start text-nowrap"
       onclick={onClick}
     >

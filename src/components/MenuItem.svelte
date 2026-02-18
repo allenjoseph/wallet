@@ -11,7 +11,8 @@
 
 <button
   {title}
-  class="rounded-lg w-full px-2"
+  type="button"
+  class="w-full px-2"
   onclick={onSelect}
   disabled={selected}
 >

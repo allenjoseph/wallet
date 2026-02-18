@@ -60,11 +60,13 @@
 
   <div class="relative">
     <button
+      type="button"
       class={[
         "flex justify-center items-center rounded-lg p-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700",
       ]}
       title="Settings"
       onclick={toggleMenu}
+      aria-label="Settings"
     >
       <EllipsisVertical size={24} />
     </button>
@@ -75,11 +77,11 @@
       >
         {@render menuItem(
           "Categories",
-          onSelectMenuItem.bind(null, routes.category)
+          onSelectMenuItem.bind(null, routes.category),
         )}
         {@render menuItem(
           "Sources",
-          onSelectMenuItem.bind(null, routes.source)
+          onSelectMenuItem.bind(null, routes.source),
         )}
         {@render menuItem("Log out", signOut)}
       </div>
@@ -89,9 +91,11 @@
 
 {#snippet menuItem(title: string, onClick: () => void)}
   <button
+    type="button"
     class="rounded-lg px-4 py-2 text-left w-full text-nowrap hover:bg-gray-50 text-sm"
     role="menuitem"
     onclick={onClick}
+    aria-label={title}
   >
     {title}
   </button>
