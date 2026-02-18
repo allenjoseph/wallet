@@ -7,11 +7,18 @@ import {
 } from "lucide-svelte";
 import type { Route } from "./entities";
 
+const expense: Route = {
+  title: "Expense",
+  path: "expense",
+  Icon: HandCoins,
+  view: "Expense",
+};
+
 const expenses: Route = {
   title: "Expenses",
   path: "expenses",
   Icon: PiggyBank,
-  routeAdd: { title: "Expense", path: "expense", Icon: HandCoins } as Route,
+  routeAdd: expense,
   view: "Expenses",
 };
 
