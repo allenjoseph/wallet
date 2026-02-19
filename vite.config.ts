@@ -1,6 +1,6 @@
-import { readFileSync } from "fs";
-import { defineConfig } from "vite";
+import { readFileSync } from "node:fs";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
+import { defineConfig } from "vite";
 
 // https://vite.dev/config/
 export default defineConfig({

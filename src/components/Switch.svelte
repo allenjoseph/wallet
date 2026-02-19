@@ -1,11 +1,13 @@
 <script lang="ts">
-  interface Props {
-    name: string;
-    checked?: boolean;
-    children?: () => any;
-  }
+import type { Snippet } from "svelte";
 
-  let { name, checked = $bindable(), children }: Props = $props();
+interface Props {
+  name: string;
+  checked?: boolean;
+  children?: Snippet;
+}
+
+let { name, checked = $bindable(), children }: Props = $props();
 </script>
 
 <div class="flex items-center gap-2">

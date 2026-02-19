@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { LoaderCircle } from "lucide-svelte";
-  import TopBar from "./components/bars/TopBar.svelte";
-  import BottomBar from "./components/bars/BottomBar.svelte";
-  import Login from "./views/Login.svelte";
-  import { wallet } from "./state.svelte";
+import { LoaderCircle } from "lucide-svelte";
+import BottomBar from "./components/bars/BottomBar.svelte";
+import TopBar from "./components/bars/TopBar.svelte";
+import { wallet } from "./state.svelte";
+import Login from "./views/Login.svelte";
 </script>
 
 <main class="flex">

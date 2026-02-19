@@ -1,13 +1,9 @@
-import { collection, CollectionReference } from "firebase/firestore";
-import { BaseRepo } from "./BaseRepo";
+import { collection } from "firebase/firestore";
 import { db } from "../db";
 import type { Source } from "../entities";
+import { BaseRepo } from "./BaseRepo";
 
 class SourceRepo extends BaseRepo<Source> {
-  constructor(ref: CollectionReference) {
-    super(ref);
-  }
-
   async getAll() {
     return this.queryDocs().then((docs) =>
       docs.toSorted((a, b) => a.name.localeCompare(b.name)),

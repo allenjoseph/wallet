@@ -1,5 +1,5 @@
 <script lang="ts">
-  let { onClick, disabled = false, children, secondary = false } = $props();
+let { onClick, disabled = false, children, secondary = false } = $props();
 </script>
 
 <button

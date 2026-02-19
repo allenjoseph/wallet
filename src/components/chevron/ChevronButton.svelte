@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { ChevronsDown, ChevronsUp } from "lucide-svelte";
+import { ChevronsDown, ChevronsUp } from "lucide-svelte";
 
-  interface Props {
-    open: boolean;
-    toggle: () => void;
-    right?: boolean;
-  }
+interface Props {
+  open: boolean;
+  toggle: () => void;
+  right?: boolean;
+}
 
-  const { open, toggle, right = false }: Props = $props();
+const { open, toggle, right = false }: Props = $props();
 </script>
 
 <button

@@ -1,18 +1,18 @@
 <script lang="ts">
-  import { CornerUpLeft, Plus } from "lucide-svelte";
-  import { wallet } from "../../state.svelte";
-  import MenuItem from "../MenuItem.svelte";
-  import type { Route } from "../../entities";
-  import { routes } from "../../routes";
+import { CornerUpLeft, Plus } from "lucide-svelte";
+import type { Route } from "../../entities";
+import { routes } from "../../routes";
+import { wallet } from "../../state.svelte";
+import MenuItem from "../MenuItem.svelte";
 
-  function onSelectMenu(item: Route) {
-    wallet.selectedExpense = null;
-    wallet.selectedRoute = item;
-  }
+function onSelectMenu(item: Route) {
+  wallet.selectedExpense = null;
+  wallet.selectedRoute = item;
+}
 
-  function onSelectAdd() {
-    wallet.selectedRoute = wallet.selectedRoute.routeAdd ?? routes.expenses;
-  }
+function onSelectAdd() {
+  wallet.selectedRoute = wallet.selectedRoute.routeAdd ?? routes.expenses;
+}
 </script>
 
 <div

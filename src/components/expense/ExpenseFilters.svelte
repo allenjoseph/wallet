@@ -1,20 +1,20 @@
 <script lang="ts">
-  import { ListFilter } from "lucide-svelte";
-  import Badge from "../badge/Badge.svelte";
-  import ChevronButton from "../chevron/ChevronButton.svelte";
-  import { categoryRepo, sourceRepo } from "../../repositories";
-  import { TagGroup } from "../../entities";
+import { ListFilter } from "lucide-svelte";
+import { TagGroup } from "../../entities";
+import { categoryRepo, sourceRepo } from "../../repositories";
+import Badge from "../badge/Badge.svelte";
+import ChevronButton from "../chevron/ChevronButton.svelte";
 
-  let { onclick, selected } = $props();
+let { onclick, selected } = $props();
 
-  let active = $state<TagGroup>(TagGroup.Source);
+let active = $state<TagGroup>(TagGroup.Source);
 
-  let sources$ = $state(sourceRepo.getAll());
-  let categories$ = $state(categoryRepo.getAll());
+let sources$ = $state(sourceRepo.getAll());
+let categories$ = $state(categoryRepo.getAll());
 
-  function toggle() {
-    active = active === TagGroup.Source ? TagGroup.Category : TagGroup.Source;
-  }
+function toggle() {
+  active = active === TagGroup.Source ? TagGroup.Category : TagGroup.Source;
+}
 </script>
 
 <div class="relative w-full h-[30px] overflow-hidden">

@@ -1,38 +1,38 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+import { onMount } from "svelte";
 
-  interface Props {
-    amount?: number;
-    readonly?: boolean;
-    limit?: number;
+interface Props {
+  amount?: number;
+  readonly?: boolean;
+  limit?: number;
+}
+
+let { amount = $bindable(), readonly = false, limit = 0 }: Props = $props();
+
+let amount$: HTMLInputElement;
+let animate = $state(!readonly);
+let textColor = $state("text-gray-500");
+
+function onClick() {
+  animate = true;
+  amount$.focus();
+}
+
+function onBlur() {
+  animate = false;
+}
+
+$effect(() => {
+  textColor = "text-gray-500";
+  if (limit && amount) {
+    if (amount > limit * 0.5) textColor = "text-amber-600";
+    if (amount > limit) textColor = "text-red-600";
   }
+});
 
-  let { amount = $bindable(), readonly = false, limit = 0 }: Props = $props();
-
-  let amount$: HTMLInputElement;
-  let animate = $state(!readonly);
-  let textColor = $state("text-gray-500");
-
-  function onClick() {
-    animate = true;
-    amount$.focus();
-  }
-
-  function onBlur() {
-    animate = false;
-  }
-
-  $effect(() => {
-    textColor = "text-gray-500";
-    if (limit && amount) {
-      if (amount > limit * 0.5) textColor = "text-amber-600";
-      if (amount > limit) textColor = "text-red-600";
-    }
-  });
-
-  onMount(() => {
-    amount$.focus();
-  });
+onMount(() => {
+  amount$.focus();
+});
 </script>
 
 <div class="flex-1 flex flex-col gap-2">

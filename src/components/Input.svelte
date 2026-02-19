@@ -1,33 +1,31 @@
 <script lang="ts">
-  interface Props {
-    name: string;
-    label?: string;
-    type?: string;
-    placeholder?: string;
-    value?: string | number;
-    min?: number;
-    inputmode?:
-      | "numeric"
-      | "tel"
-      | "email"
-      | "url"
-      | "search"
-      | "none"
-      | "decimal";
-  }
+interface Props {
+  name: string;
+  label?: string;
+  type?: string;
+  placeholder?: string;
+  value?: string | number;
+  min?: number;
+  inputmode?:
+    | "numeric"
+    | "tel"
+    | "email"
+    | "url"
+    | "search"
+    | "none"
+    | "decimal";
+}
 
-  let {
-    name,
-    label,
-    type = "text",
-    placeholder = "",
-    value = $bindable(),
-    ...rest
-  }: Props = $props();
+let {
+  name,
+  label,
+  type = "text",
+  placeholder = "",
+  value = $bindable(),
+  ...rest
+}: Props = $props();
 
-  const _label = $derived(
-    label ?? name.charAt(0).toUpperCase() + name.slice(1),
-  );
+const _label = $derived(label ?? name.charAt(0).toUpperCase() + name.slice(1));
 </script>
 
 <div>

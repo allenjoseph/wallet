@@ -1,64 +1,65 @@
 <script lang="ts">
-  import Divider from "../components/Divider.svelte";
-  import ExpenseCard from "../components/card/ExpenseCard.svelte";
-  import View from "../components/View.svelte";
-  import { wallet } from "../state.svelte";
-  import ExpenseAmount from "../components/expense/ExpenseAmount.svelte";
-  import {
-    sumMonthPeriod,
-    filterExpenses,
-    loaderDecorator,
-    getTotalLimit,
-  } from "../utils";
-  import ExpenseFilters from "../components/expense/ExpenseFilters.svelte";
-  import MainCard from "../components/card/MainCard.svelte";
-  import { routes } from "../routes";
-  import ExpenseMonthlyPeriodDay from "../components/expense/ExpenseMonthlyPeriodDay.svelte";
-  import { categoryRepo, expenseRepo } from "../repositories";
-  import { TagGroup } from "../entities";
-  import type { Doc, Expense, Filter, Category } from "../entities";
+import ExpenseCard from "../components/card/ExpenseCard.svelte";
+import MainCard from "../components/card/MainCard.svelte";
+import Divider from "../components/Divider.svelte";
+import ExpenseAmount from "../components/expense/ExpenseAmount.svelte";
+import ExpenseFilters from "../components/expense/ExpenseFilters.svelte";
+import ExpenseMonthlyPeriodDay from "../components/expense/ExpenseMonthlyPeriodDay.svelte";
+import View from "../components/View.svelte";
+import type { Category, Doc, Expense, Filter, TagGroup } from "../entities";
+import { categoryRepo, expenseRepo } from "../repositories";
+import { routes } from "../routes";
+import { wallet } from "../state.svelte";
+import {
+  filterExpenses,
+  getTotalLimit,
+  loaderDecorator,
+  sumMonthPeriod,
+} from "../utils";
 
-  let allExpenses = $state<Expense[]>();
-  let fSelected = $state<Filter>();
-  let currentLimit = $state<number>(0);
+let allExpenses = $state<Expense[]>();
+let fSelected = $state<Filter>();
+let currentLimit = $state<number>(0);
 
-  let categories = $state<Category[]>();
-  let expenses = $derived(filterExpenses(allExpenses, fSelected));
-  let total = $derived(sumMonthPeriod(expenses, wallet.monthlyPeriodDay));
+let categories = $state<Category[]>();
+let expenses = $derived(filterExpenses(allExpenses, fSelected));
+let total = $derived(sumMonthPeriod(expenses, wallet.monthlyPeriodDay));
 
-  function onEdit(expense: Expense) {
-    wallet.selectedExpense = { ...expense };
-    wallet.selectedRoute = routes.expenses.routeAdd!;
+function onEdit(expense: Expense) {
+  wallet.selectedExpense = { ...expense };
+  if (routes.expenses.routeAdd) {
+    wallet.selectedRoute = routes.expenses.routeAdd;
   }
+}
 
-  async function onDelete(id: string) {
-    await expenseRepo.delete(id);
-    allExpenses = allExpenses?.filter((o) => o.id !== id);
+async function onDelete(id: string) {
+  await expenseRepo.delete(id);
+  allExpenses = allExpenses?.filter((o) => o.id !== id);
+}
+
+function onFilter(name: TagGroup, item: Doc) {
+  fSelected =
+    !item.id || fSelected?.id === item.id ? undefined : { name, id: item.id };
+
+  currentLimit = !fSelected
+    ? getTotalLimit(categories)
+    : ((item as Category).limit ?? 0);
+}
+
+$effect(() => {
+  if (wallet.monthlyPeriodDay) {
+    expenseRepo
+      .query(wallet.monthlyPeriodDay)
+      .then((data) => (allExpenses = data));
   }
+});
 
-  function onFilter(name: TagGroup, item: Doc) {
-    fSelected =
-      !item.id || fSelected?.id === item.id ? undefined : { name, id: item.id };
-
-    currentLimit = !fSelected
-      ? getTotalLimit(categories)
-      : ((item as Category).limit ?? 0);
-  }
-
-  $effect(() => {
-    if (wallet.monthlyPeriodDay) {
-      expenseRepo
-        .query(wallet.monthlyPeriodDay)
-        .then((data) => (allExpenses = data));
-    }
+$effect(() => {
+  categoryRepo.getAll().then((data) => {
+    categories = data;
+    currentLimit = getTotalLimit(data);
   });
-
-  $effect(() => {
-    categoryRepo.getAll().then((data) => {
-      categories = data;
-      currentLimit = getTotalLimit(data);
-    });
-  });
+});
 </script>
 
 <View>

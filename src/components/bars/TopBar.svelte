@@ -1,39 +1,39 @@
 <script lang="ts">
-  import { EllipsisVertical } from "lucide-svelte";
-  import { wallet } from "../../state.svelte";
-  import { authService } from "../../services";
-  import type { Route } from "../../entities";
-  import { routes } from "../../routes";
+import { EllipsisVertical } from "lucide-svelte";
+import type { Route } from "../../entities";
+import { routes } from "../../routes";
+import { authService } from "../../services";
+import { wallet } from "../../state.svelte";
 
-  let hasImage = $state(true);
-  let isSettingsOpen = $state(false);
+let hasImage = $state(true);
+let isSettingsOpen = $state(false);
 
-  function imageFallback() {
-    hasImage = false;
-  }
+function imageFallback() {
+  hasImage = false;
+}
 
-  function signOut() {
-    authService.logOut().then(() => (wallet.user = null as never));
-  }
+function signOut() {
+  authService.logOut().then(() => (wallet.user = null as never));
+}
 
-  function onSelectMenuItem(item: Route) {
-    wallet.selectedExpense = null;
-    wallet.selectedRoute = item;
-  }
+function onSelectMenuItem(item: Route) {
+  wallet.selectedExpense = null;
+  wallet.selectedRoute = item;
+}
 
-  function toggleMenu(e: Event) {
-    e.stopPropagation(); // avoid that the document listener close the menu
-    isSettingsOpen = !isSettingsOpen;
-  }
+function toggleMenu(e: Event) {
+  e.stopPropagation(); // avoid that the document listener close the menu
+  isSettingsOpen = !isSettingsOpen;
+}
 
-  $effect(() => {
-    // Close menu when user do a click in the document
-    document.addEventListener("click", () => {
-      if (isSettingsOpen) {
-        isSettingsOpen = false;
-      }
-    });
+$effect(() => {
+  // Close menu when user do a click in the document
+  document.addEventListener("click", () => {
+    if (isSettingsOpen) {
+      isSettingsOpen = false;
+    }
   });
+});
 </script>
 
 <div class="fixed flex w-screen h-14 bg-white z-20 p-2">

@@ -1,15 +1,15 @@
 <script lang="ts">
-  import dayjs from "dayjs";
-  import { CreditCard, ArrowRight, ShoppingCart, Trash2 } from "lucide-svelte";
-  import Badge from "../badge/Badge.svelte";
-  import type { Expense } from "../../entities";
+import dayjs from "dayjs";
+import { ArrowRight, CreditCard, ShoppingCart, Trash2 } from "lucide-svelte";
+import type { Expense } from "../../entities";
+import Badge from "../badge/Badge.svelte";
 
-  interface Props extends Expense {
-    ondelete: () => void;
-    onedit: () => void;
-  }
+interface Props extends Expense {
+  ondelete: () => void;
+  onedit: () => void;
+}
 
-  const { ondelete, onedit, ...expense }: Props = $props();
+const { ondelete, onedit, ...expense }: Props = $props();
 </script>
 
 <div class="card space-y-2">

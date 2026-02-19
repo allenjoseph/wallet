@@ -1,11 +1,12 @@
-import dayjs, { Dayjs } from "dayjs";
+import dayjs, { type Dayjs } from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
+
 dayjs.extend(isBetween);
 
-import { wallet } from "./state.svelte";
 import type { Category, Expense, Filter } from "./entities";
+import { wallet } from "./state.svelte";
 
-export function loaderDecorator(cb: () => Promise<any>) {
+export function loaderDecorator(cb: () => Promise<void>) {
   return async () => {
     wallet.isLoading = true;
     await cb();

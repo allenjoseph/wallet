@@ -1,9 +1,9 @@
 import {
-  getAuth,
+  type Auth,
   GoogleAuthProvider,
+  getAuth,
   signInWithRedirect,
   signOut,
-  type Auth,
 } from "firebase/auth";
 import type { User } from "../entities";
 import { userRepo } from "../repositories";

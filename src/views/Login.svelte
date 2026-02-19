@@ -1,18 +1,18 @@
 <script lang="ts">
-  import { PiggyBank } from "lucide-svelte";
-  import { wallet } from "../state.svelte";
-  import { authService } from "../services";
-  import Button from "../components/Button.svelte";
+import { PiggyBank } from "lucide-svelte";
+import Button from "../components/Button.svelte";
+import { authService } from "../services";
+import { wallet } from "../state.svelte";
 
-  wallet.isLoading = true;
+wallet.isLoading = true;
 
-  authService.auth.onAuthStateChanged(async (user) => {
-    if (user) {
-      await authService.postAuth(user);
-      wallet.user = user;
-    }
-    wallet.isLoading = false;
-  });
+authService.auth.onAuthStateChanged(async (user) => {
+  if (user) {
+    await authService.postAuth(user);
+    wallet.user = user;
+  }
+  wallet.isLoading = false;
+});
 </script>
 
 <div class="mx-auto max-w-(--breakpoint-xl) py-16 px-6">

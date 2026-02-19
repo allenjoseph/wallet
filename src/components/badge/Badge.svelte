@@ -1,24 +1,27 @@
 <script lang="ts">
-  interface Props {
-    Icon?: any;
-    small?: boolean;
-    disabled?: boolean;
-    onclick?: () => void;
-    children?: () => any;
-    selected?: boolean;
-    outline?: boolean;
-    secondary?: boolean;
-  }
-  let {
-    small,
-    Icon,
-    onclick,
-    children,
-    disabled = false,
-    selected,
-    outline,
-    secondary,
-  }: Props = $props();
+import type { Snippet } from "svelte";
+
+interface Props {
+  // biome-ignore lint/suspicious/noExplicitAny: lucide icon
+  Icon?: any;
+  small?: boolean;
+  disabled?: boolean;
+  onclick?: () => void;
+  children?: Snippet;
+  selected?: boolean;
+  outline?: boolean;
+  secondary?: boolean;
+}
+let {
+  small,
+  Icon,
+  onclick,
+  children,
+  disabled = false,
+  selected,
+  outline,
+  secondary,
+}: Props = $props();
 </script>
 
 <button

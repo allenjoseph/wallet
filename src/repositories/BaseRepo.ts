@@ -1,17 +1,23 @@
 import {
   addDoc,
-  CollectionReference,
+  type CollectionReference,
+  type DocumentData,
   deleteDoc,
   doc,
   getDocs,
   orderBy,
+  type QueryConstraint,
   query,
-  QueryConstraint,
   Timestamp,
   updateDoc,
   where,
 } from "firebase/firestore";
 import type { Doc } from "../entities";
+
+type DocWithDatetime = Omit<Doc, "datetime"> & {
+  expenseDate?: Date | Timestamp;
+  datetime?: Date | Timestamp;
+};
 
 export abstract class BaseRepo<T extends Doc> {
   constructor(private ref: CollectionReference) {}
@@ -32,7 +38,7 @@ export abstract class BaseRepo<T extends Doc> {
   }
 
   async save(item: T) {
-    const data = this.mapDatesToTimestamp({ ...item });
+    const data = this.mapDatesToTimestamp(item);
     return data.id ? this.updateItem(data) : this.addItem(data);
   }
 
@@ -42,13 +48,13 @@ export abstract class BaseRepo<T extends Doc> {
 
   // Private methods
 
-  private addItem(item: T) {
+  private addItem(item: DocWithDatetime) {
     const data = { ...item, owner: this.getOwner(), datetime: Timestamp.now() };
     return addDoc(this.ref, data);
   }
 
-  private updateItem(item: T) {
-    const data = { ...item, datetime: Timestamp.now() } as any;
+  private updateItem(item: DocWithDatetime) {
+    const data = { ...item, datetime: Timestamp.now() };
     delete data.id;
     return updateDoc(doc(this.ref, item.id), data);
   }
@@ -63,7 +69,7 @@ export abstract class BaseRepo<T extends Doc> {
     return uid;
   }
 
-  private mapTimestampsToDate(item: any) {
+  private mapTimestampsToDate(item: DocumentData) {
     const data = item.data();
     if (data.datetime) {
       data.datetime = (data.datetime as Timestamp).toDate();
@@ -74,13 +80,14 @@ export abstract class BaseRepo<T extends Doc> {
     return { id: item.id, ...data } as T;
   }
 
-  private mapDatesToTimestamp(item: any) {
-    if (item.datetime) {
-      item.datetime = Timestamp.fromDate(item.datetime);
+  private mapDatesToTimestamp(item: Doc) {
+    const data: DocWithDatetime = { ...item };
+    if (data.datetime) {
+      data.datetime = Timestamp.fromDate(data.datetime as Date);
     }
-    if (item.expenseDate) {
-      item.expenseDate = Timestamp.fromDate(item.expenseDate);
+    if (data.expenseDate) {
+      data.expenseDate = Timestamp.fromDate(data.expenseDate as Date);
     }
-    return item;
+    return data;
   }
 }

@@ -1,11 +1,14 @@
-import dayjs from "dayjs";
 import type { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import type { Expense, Tag, TagGroup } from "../entities";
 
 export class ExpenseRange {
   expenses: Expense[] = [];
 
-  constructor(private readonly start: Dayjs, private readonly end: Dayjs) {}
+  constructor(
+    private readonly start: Dayjs,
+    private readonly end: Dayjs,
+  ) {}
 
   cover(e: Expense) {
     const date = dayjs(e.expenseDate);

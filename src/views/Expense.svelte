@@ -1,58 +1,58 @@
 <script lang="ts">
-  import dayjs from "dayjs";
-  import ExpenseAmount from "../components/expense/ExpenseAmount.svelte";
-  import DropdownBadge from "../components/badge/DropdownBadge.svelte";
-  import Button from "../components/Button.svelte";
-  import View from "../components/View.svelte";
-  import Input from "../components/Input.svelte";
-  import { wallet } from "../state.svelte";
-  import { CreditCard, ShoppingCart } from "lucide-svelte";
-  import { loaderDecorator } from "../utils";
-  import Divider from "../components/Divider.svelte";
-  import MainCard from "../components/card/MainCard.svelte";
-  import { routes } from "../routes";
-  import { categoryRepo, expenseRepo, sourceRepo } from "../repositories";
-  import type { Expense } from "../entities";
-  import ExpenseRecurrent from "../components/expense/ExpenseRecurrent.svelte";
+import dayjs from "dayjs";
+import { CreditCard, ShoppingCart } from "lucide-svelte";
+import Button from "../components/Button.svelte";
+import DropdownBadge from "../components/badge/DropdownBadge.svelte";
+import MainCard from "../components/card/MainCard.svelte";
+import Divider from "../components/Divider.svelte";
+import ExpenseAmount from "../components/expense/ExpenseAmount.svelte";
+import ExpenseRecurrent from "../components/expense/ExpenseRecurrent.svelte";
+import Input from "../components/Input.svelte";
+import View from "../components/View.svelte";
+import type { Expense } from "../entities";
+import { categoryRepo, expenseRepo, sourceRepo } from "../repositories";
+import { routes } from "../routes";
+import { wallet } from "../state.svelte";
+import { loaderDecorator } from "../utils";
 
-  let expenseDate: string = $state(
-    dayjs(wallet.selectedExpense?.expenseDate).format("YYYY-MM-DDTHH:mm")
-  );
-  const categories$ = categoryRepo.getAll();
-  const sources$ = sourceRepo.getAll();
+let expenseDate: string = $state(
+  dayjs(wallet.selectedExpense?.expenseDate).format("YYYY-MM-DDTHH:mm"),
+);
+const categories$ = categoryRepo.getAll();
+const sources$ = sourceRepo.getAll();
 
-  let expense = $state<Expense>(
-    wallet.selectedExpense ?? {
-      name: "",
-      amount: 0,
-      description: "",
-      expenseDate: dayjs().toDate(),
-      category: null as never,
-      source: null as never,
-    }
-  );
+let expense = $state<Expense>(
+  wallet.selectedExpense ?? {
+    name: "",
+    amount: 0,
+    description: "",
+    expenseDate: dayjs().toDate(),
+    category: null as never,
+    source: null as never,
+  },
+);
 
-  let isInvalid = $derived(
-    !expense.category || !expense.source || !expense.name || !expense.amount
-  );
+let isInvalid = $derived(
+  !expense.category || !expense.source || !expense.name || !expense.amount,
+);
 
-  async function onSave() {
-    const times =
-      Number(expense.numberOfTimes) > 1 ? Number(expense.numberOfTimes) : 1;
+async function onSave() {
+  const times =
+    Number(expense.numberOfTimes) > 1 ? Number(expense.numberOfTimes) : 1;
 
-    for (let i = 0; i < times; i++) {
-      await expenseRepo.save({
-        ...expense,
-        name: times > 1 ? `${expense.name} ${i + 1}/${times}` : expense.name,
-        expenseDate: dayjs(expenseDate).add(i, "month").toDate(),
-      });
-    }
-    wallet.selectedRoute = routes.expenses;
+  for (let i = 0; i < times; i++) {
+    await expenseRepo.save({
+      ...expense,
+      name: times > 1 ? `${expense.name} ${i + 1}/${times}` : expense.name,
+      expenseDate: dayjs(expenseDate).add(i, "month").toDate(),
+    });
   }
+  wallet.selectedRoute = routes.expenses;
+}
 
-  function onChangeRecurrent(numberOfTimes: number) {
-    expense.numberOfTimes = numberOfTimes;
-  }
+function onChangeRecurrent(numberOfTimes: number) {
+  expense.numberOfTimes = numberOfTimes;
+}
 </script>
 
 <View>

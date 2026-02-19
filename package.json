@@ -9,9 +9,12 @@
     "deploy": "firebase deploy --only hosting",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
-    "fb": "firebase"
+    "fb": "firebase",
+    "biome:check": "biome check",
+    "biome:fix": "biome check --write"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.2",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/postcss": "^4.1.13",

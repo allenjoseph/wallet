@@ -1,32 +1,32 @@
 <script lang="ts">
-  import Divider from "../components/Divider.svelte";
-  import View from "../components/View.svelte";
-  import { wallet } from "../state.svelte";
-  import ExpenseMonthlyPeriodDay from "../components/expense/ExpenseMonthlyPeriodDay.svelte";
-  import {
-    ChartColumn,
-    ChartLine,
-    CreditCard,
-    ShoppingCart,
-  } from "lucide-svelte";
-  import Badge from "../components/badge/Badge.svelte";
-  import { formatCurrency, getTotals } from "../utils";
-  import { expenseRepo } from "../repositories";
-  import { TagGroup } from "../entities";
-  import { ExpenseChart } from "../helpers";
+import {
+  ChartColumn,
+  ChartLine,
+  CreditCard,
+  ShoppingCart,
+} from "lucide-svelte";
+import Badge from "../components/badge/Badge.svelte";
+import Divider from "../components/Divider.svelte";
+import ExpenseMonthlyPeriodDay from "../components/expense/ExpenseMonthlyPeriodDay.svelte";
+import View from "../components/View.svelte";
+import { TagGroup } from "../entities";
+import { ExpenseChart } from "../helpers";
+import { expenseRepo } from "../repositories";
+import { wallet } from "../state.svelte";
+import { formatCurrency, getTotals } from "../utils";
 
-  let chartHistory = import("../components/chart/ChartHistory.svelte");
-  let chartDonut = import("../components/chart/ChartDonut.svelte");
+let chartHistory = import("../components/chart/ChartHistory.svelte");
+let chartDonut = import("../components/chart/ChartDonut.svelte");
 
-  let groupBy = $state<TagGroup>(TagGroup.Category);
-  let cutoff = $state(wallet.monthlyPeriodDay.clone());
-  let historyChart = $state<"line" | "bar">("line");
-  let historyMonths = $state<number>(3);
+let groupBy = $state<TagGroup>(TagGroup.Category);
+let cutoff = $state(wallet.monthlyPeriodDay.clone());
+let historyChart = $state<"line" | "bar">("line");
+let historyMonths = $state<number>(3);
 
-  const from = $derived(cutoff.subtract(historyMonths - 1, "M")); // include current month
-  const to = $derived(cutoff.add(1, "M")); // one month ahead
+const from = $derived(cutoff.subtract(historyMonths - 1, "M")); // include current month
+const to = $derived(cutoff.add(1, "M")); // one month ahead
 
-  const expenses$ = $derived(expenseRepo.query(from, to));
+const expenses$ = $derived(expenseRepo.query(from, to));
 </script>
 
 <View>

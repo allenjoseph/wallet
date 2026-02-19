@@ -1,12 +1,13 @@
 <script lang="ts">
-  interface Props {
-    title: string;
-    Icon: any;
-    selected: boolean;
-    onSelect: () => void;
-  }
+interface Props {
+  title: string;
+  // biome-ignore lint/suspicious/noExplicitAny: lucide icon
+  Icon: any;
+  selected: boolean;
+  onSelect: () => void;
+}
 
-  let { title, Icon, selected, onSelect }: Props = $props();
+let { title, Icon, selected, onSelect }: Props = $props();
 </script>
 
 <button

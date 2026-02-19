@@ -1,42 +1,42 @@
 <script lang="ts">
-  import Button from "../components/Button.svelte";
-  import Input from "../components/Input.svelte";
-  import View from "../components/View.svelte";
-  import Divider from "../components/Divider.svelte";
-  import Card from "../components/card/Card.svelte";
-  import { getTotalLimit, loaderDecorator } from "../utils";
-  import MainCard from "../components/card/MainCard.svelte";
-  import ChevronButton from "../components/chevron/ChevronButton.svelte";
-  import { categoryRepo } from "../repositories";
-  import type { Category } from "../entities";
+import Button from "../components/Button.svelte";
+import Card from "../components/card/Card.svelte";
+import MainCard from "../components/card/MainCard.svelte";
+import ChevronButton from "../components/chevron/ChevronButton.svelte";
+import Divider from "../components/Divider.svelte";
+import Input from "../components/Input.svelte";
+import View from "../components/View.svelte";
+import type { Category } from "../entities";
+import { categoryRepo } from "../repositories";
+import { getTotalLimit, loaderDecorator } from "../utils";
 
-  let showForm = $state(false);
-  let category = $state<Category>({ name: "", description: "" });
-  let categories$ = $state(categoryRepo.getAll());
+let showForm = $state(false);
+let category = $state<Category>({ name: "", description: "" });
+let categories$ = $state(categoryRepo.getAll());
 
-  let isInvalid = $derived(!category.name || !category.description);
+let isInvalid = $derived(!category.name || !category.description);
 
-  async function onSave() {
-    await categoryRepo.save({ ...category });
-    category = { name: "", description: "" };
-    categories$ = categoryRepo.getAll();
-  }
+async function onSave() {
+  await categoryRepo.save({ ...category });
+  category = { name: "", description: "" };
+  categories$ = categoryRepo.getAll();
+}
 
-  async function onEdit(item: Category) {
-    category = { ...item };
-    showForm = true;
-    scrollTo(0, 0);
-  }
+async function onEdit(item: Category) {
+  category = { ...item };
+  showForm = true;
+  scrollTo(0, 0);
+}
 
-  async function onDelete(id: string) {
-    await categoryRepo.delete(id);
-    categories$ = categoryRepo.getAll();
-  }
+async function onDelete(id: string) {
+  await categoryRepo.delete(id);
+  categories$ = categoryRepo.getAll();
+}
 
-  function onCancel() {
-    category = { name: "", description: "" };
-    showForm = false;
-  }
+function onCancel() {
+  category = { name: "", description: "" };
+  showForm = false;
+}
 </script>
 
 <View>

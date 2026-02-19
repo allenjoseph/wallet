@@ -1,31 +1,32 @@
 <script lang="ts">
-  import type { Doc } from "../../entities";
-  import Badge from "./Badge.svelte";
+import type { Doc } from "../../entities";
+import Badge from "./Badge.svelte";
 
-  interface Props {
-    Icon: any;
-    value?: Doc;
-    data$: Promise<Doc[]>;
-    placeholder?: string;
-    small?: boolean;
-  }
+interface Props {
+  // biome-ignore lint/suspicious/noExplicitAny: lucide icon
+  Icon: any;
+  value?: Doc;
+  data$: Promise<Doc[]>;
+  placeholder?: string;
+  small?: boolean;
+}
 
-  let {
-    Icon,
-    value = $bindable(null as never),
-    data$,
-    placeholder,
-    small,
-  }: Props = $props();
+let {
+  Icon,
+  value = $bindable(null as never),
+  data$,
+  placeholder,
+  small,
+}: Props = $props();
 
-  let isOpen = $state(false);
-  let selectedItem = $state<Doc>(value);
+let isOpen = $state(false);
+let selectedItem = $state<Doc>(value);
 
-  function onSelect(category: Doc) {
-    value = category;
-    selectedItem = category;
-    isOpen = false;
-  }
+function onSelect(category: Doc) {
+  value = category;
+  selectedItem = category;
+  isOpen = false;
+}
 </script>
 
 <div class="relative">

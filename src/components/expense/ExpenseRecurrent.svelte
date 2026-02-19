@@ -1,16 +1,16 @@
 <script lang="ts">
-  import Input from "../Input.svelte";
-  import Switch from "../Switch.svelte";
+import Input from "../Input.svelte";
+import Switch from "../Switch.svelte";
 
-  let { onChange } = $props();
+let { onChange } = $props();
 
-  let isRecurrent = $state(false);
-  let _numberOfTimes = $state(0);
+let isRecurrent = $state(false);
+let _numberOfTimes = $state(0);
 
-  $effect(() => {
-    _numberOfTimes = isRecurrent ? _numberOfTimes : 0;
-    onChange?.(_numberOfTimes);
-  });
+$effect(() => {
+  _numberOfTimes = isRecurrent ? _numberOfTimes : 0;
+  onChange?.(_numberOfTimes);
+});
 </script>
 
 <div class="flex flex-col items-end gap-2 w-32">

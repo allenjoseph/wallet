@@ -1,4 +1,4 @@
-import { Dayjs } from "dayjs";
+import type { Dayjs } from "dayjs";
 import type { Expense, TagGroup } from "../entities";
 import { ExpenseRange } from "./ExpenseRange";
 
@@ -27,7 +27,7 @@ export class ExpenseChart {
     private readonly expenses: Expense[],
     private readonly tagGroup: TagGroup,
     private readonly cutoff: Dayjs,
-    private readonly numMonths: number
+    private readonly numMonths: number,
   ) {
     this.ranges = this.buildRanges();
     this.series = this.buildSeries();
@@ -78,7 +78,7 @@ export class ExpenseChart {
     return delta > 0
       ? this.cutoff.subtract(delta, "M")
       : delta === 0
-      ? this.cutoff
-      : this.cutoff.add(Math.abs(delta), "M");
+        ? this.cutoff
+        : this.cutoff.add(Math.abs(delta), "M");
   }
 }

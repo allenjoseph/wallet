@@ -1,15 +1,15 @@
 <script lang="ts">
-  import dayjs from "dayjs";
-  import { Pencil, Trash2 } from "lucide-svelte";
-  import type { Doc } from "../../entities";
+import dayjs from "dayjs";
+import { Pencil, Trash2 } from "lucide-svelte";
+import type { Doc } from "../../entities";
 
-  interface Props extends Doc {
-    limit?: number;
-    onedit: () => void;
-    ondelete: () => void;
-  }
+interface Props extends Doc {
+  limit?: number;
+  onedit: () => void;
+  ondelete: () => void;
+}
 
-  const { onedit, ondelete, ...item }: Props = $props();
+const { onedit, ondelete, ...item }: Props = $props();
 </script>
 
 <div class="card">

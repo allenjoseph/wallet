@@ -1,22 +1,22 @@
 <script lang="ts">
-  import type { Dayjs } from "dayjs";
-  import dayjs from "dayjs";
-  import { ChevronDown } from "lucide-svelte";
+import type { Dayjs } from "dayjs";
+import dayjs from "dayjs";
+import { ChevronDown } from "lucide-svelte";
 
-  interface Props {
-    day: Dayjs;
+interface Props {
+  day: Dayjs;
+}
+
+let { day = $bindable() }: Props = $props();
+let dayStr = $state(day.format("YYYY-MM-DD"));
+let dayInput$: HTMLInputElement;
+
+$effect(() => {
+  if (dayStr !== day.format("YYYY-MM-DD")) {
+    day = dayjs(dayStr).startOf("day");
+    localStorage.setItem("monthlyPeriodDay", dayStr);
   }
-
-  let { day = $bindable() }: Props = $props();
-  let dayStr = $state(day.format("YYYY-MM-DD"));
-  let dayInput$: HTMLInputElement;
-
-  $effect(() => {
-    if (dayStr !== day.format("YYYY-MM-DD")) {
-      day = dayjs(dayStr).startOf("day");
-      localStorage.setItem("monthlyPeriodDay", dayStr);
-    }
-  });
+});
 </script>
 
 <span class="relative block">
